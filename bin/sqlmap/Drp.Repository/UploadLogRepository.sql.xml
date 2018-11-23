@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root xmlns="http://m2sa.net/Schema/SqlMapping">
+  <module moduleName="UploadLogRepository" dbName="Drp">
+    <sqlWrap sqlName="Insert" supportDBType="MySql,SqlServer">
+      insert into Sys_UploadLog(UploadId,FileName,FileLength,ExtensionName,ContentType,FileServer,ServerUrl,OriginalPath,OriginalUrl,ThumbnailPath,ThumbnailUrl,WatermarkWordPath,WatermarkWordUrl,WatermarkImagePath,WatermarkImageUrl,IsValid,CreateUserName,CreateDate,CreateLoginId)
+      values(@ConfigId,@FileName,@FileLength,@ExtensionName,@ContentType,@FileServer,@ServerUrl,@OriginalPath,@OriginalUrl,@ThumbnailPath,@ThumbnailUrl,@WatermarkWordPath,@WatermarkWordUrl,@WatermarkImagePath,@WatermarkImageUrl,1,@UserName,getdate(),@LoginId)
+      select @@identity
+    </sqlWrap>
+  </module>
+</root>

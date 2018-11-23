@@ -1,0 +1,94 @@
+﻿@using Drp.Model.Customer
+@using Drp.Model.Order
+
+@{
+    ViewBag.Title = "销售排名";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var orderCiteDic = ViewData["OrderCiteDic"] as IOrderedEnumerable<KeyValuePair<string, decimal>>;
+    var orderCustomerDic = ViewData["OrderCustomerDic"] as IOrderedEnumerable<KeyValuePair<int, decimal>>;
+    var orderBases = ViewData["OrderBases"] as IList<OrderBaseInfo>;
+}
+
+
+<div class="box">
+    <div class="membershipBox">
+        <div class="membershipTab">
+            <ul>
+                <li class="selected borderRight" onclick="tab('membershipContent')">城市排名</li>
+                <li onclick="tab('membershipContent')">个人排名</li>
+            </ul>
+        </div>
+        <div class="membershipContent clearfix" style="display: block;">
+            <table cellspacing="0">
+                <tr>
+                    <th>排名</th>
+                    <th>城市名称</th>
+                    <th>销售金额</th>
+                    <th>订单数</th>
+                </tr>
+                @{
+                    if (null != orderCiteDic)
+                    {
+                        var index = 1;
+                        foreach (KeyValuePair<string, decimal> kvp in orderCiteDic)
+                        {
+                            <tr>
+                                <td>@index</td>
+                                <td>@kvp.Key</td>
+                                <td>￥@kvp.Value</td>
+                                <td>@(orderBases.Count(p => !string.IsNullOrEmpty(p.CityName) && p.CityName.Equals(kvp.Key)))笔</td>
+                            </tr>
+
+                            index++;
+                        }
+                    }
+                }
+                @*<tr>
+                    <td>1</td>
+                    <td>北京</td>
+                    <td>￥56940.00</td>
+                    <td>19笔</td>
+                </tr>*@
+            </table>
+        </div>
+        <div class="membershipContent clearfix">
+            <table cellspacing="0">
+                <tr>
+                    <th>排名</th>
+                    <th>姓名</th>
+                    @*<th>手机号</th>*@
+                    <th>销售金额</th>
+                </tr>
+                @{
+                    if (null != orderCustomerDic)
+                    {
+                        var index = 1;
+                        foreach (KeyValuePair<int, decimal> kvp in orderCustomerDic)
+                        {
+                            var customerBase = CustomerBase.FindById(kvp.Key);
+                            if (null == customerBase)
+                            {
+                                continue;
+                            }
+
+                            <tr>
+                                <td>@index</td>
+                                <td>@customerBase.Name</td>
+                                @*<td>@customerBase.Mobile</td>*@
+                                <td>￥@kvp.Value</td>
+                            </tr>
+
+                            index++;
+                        }
+                    }
+                }
+                @*<tr>
+                    <td>1</td>
+                    <td>张**</td>
+                    <td>139****8343</td>
+                    <td>￥56940.00</td>
+                </tr>*@
+            </table>
+        </div>
+    </div>
+</div>

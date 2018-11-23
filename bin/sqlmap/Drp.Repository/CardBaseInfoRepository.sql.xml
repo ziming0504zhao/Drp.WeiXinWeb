@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root xmlns="http://m2sa.net/Schema/SqlMapping">
+  <module moduleName="CardBaseInfoRepository" dbName="Drp">
+    <sqlWrap  sqlName="Insert"  supportDBType="MySql,SqlServer">
+      INSERT INTO Card_BaseInfo
+      ([CreateLogId]
+      ,[CardCode]
+      ,[CardPwd]
+      ,[CardTypeId]
+      ,[Price]
+      ,[Count]
+      ,[UsedCount]
+      ,[FreezeCount]
+      ,[ExpiryLimit]
+      ,[IsActive]
+      ,[Status]
+      ,[ChannelId]
+      ,[BuyDate]
+      ,[IsValid]
+      ,[CreateUserName]
+      ,[CreateDate]
+      ,[CreateLoginId])
+      VALUES
+      (@CreateLogId
+      ,@CardCode
+      ,@CardPwd
+      ,@CardTypeId
+      ,@Price
+      ,@Count
+      ,@UsedCount
+      ,0
+      ,@ExpiryLimit
+      ,0
+      ,1
+      ,@ChannelId
+      ,@BuyDate
+      ,1
+      ,@UserName
+      ,GETDATE()
+      ,@LoginId)
+      SELECT @@IDENTITY
+    </sqlWrap>
+
+    <sqlWrap  sqlName="Update"  supportDBType="MySql,SqlServer">
+      UPDATE Card_BaseInfo
+      SET [CardPwd] = @CardPwd
+      ,[CardTypeId] = @CardTypeId
+      ,[Price] = @Price
+      ,[Count] = @Count
+      ,[UsedCount] = @UsedCount
+      ,[FreezeCount] = @FreezeCount
+      ,[ExpiryLimit] = @ExpiryLimit
+      #if(@ActiveDate){ ,[ActiveDate] = @ActiveDate }
+      #if(@ExpiryDate){ ,[ExpiryDate] = @ExpiryDate }
+      ,[IsActive] = @IsActive
+      ,[Status] = @Status
+      ,[MemberId] = @MemberId
+      ,[MemberName]= @MemberName
+      ,[MemberMobile] = @MemberMobile
+      ,[CustomerId] = @CustomerId
+      ,[CustomerName]= @CustomerName
+      ,[CustomerMobile] = @CustomerMobile
+      #if(@BuyDate){ ,[BuyDate] = @BuyDate }
+      ,[UpdateDate] = GETDATE()
+      ,[UpdateLoginId] = @LoginId
+      WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SelectById" supportDBType="MySql,SqlServer">
+      SELECT * FROM Card_BaseInfo WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap  sqlName="FindByList"  supportDBType="MySql,SqlServer">
+      SELECT * FROM Card_BaseInfo WHERE 1=1
+      #if(@CardCode){ AND CardCode=@CardCode}
+      #if(@CardPwd){ AND CardPwd=@CardPwd}
+      #if(@IsActive){ AND IsActive=@IsActive}
+      #if(@Status){ AND Status=@Status}
+      #if(@MemberId){ AND MemberId=@MemberId}
+      #if(@MemberName){ AND MemberName=@MemberName}
+      #if(@MemberMobile){ AND MemberMobile=@MemberMobile}
+      #if(@CustomerId){ AND CustomerId=@CustomerId}
+      #if(@CustomerName){ AND CustomerName=@CustomerName}
+      #if(@CustomerMobile){ AND CustomerMobile=@CustomerMobile}
+      #if(@cardTypeId){ AND cardTypeId=@cardTypeId}
+      #if(@ChannelId){ AND ChannelId=@ChannelId}
+      #if(@CreateLogId){ AND CreateLogId=@CreateLogId}
+      #if(@IsValid){ AND IsValid=@IsValid}
+      ORDER BY Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SetValid" supportDBType="MySql,SqlServer">
+      update Card_BaseInfo set IsValid=@IsValid,UpdateDate=getdate(),UpdateLoginId=@LoginId
+      where Id in (@IdList) and IsValid&lt;&gt;@IsValid;
+    </sqlWrap>
+
+  </module>
+</root>

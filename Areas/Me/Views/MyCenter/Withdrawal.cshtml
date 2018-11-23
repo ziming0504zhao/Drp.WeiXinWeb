@@ -1,0 +1,86 @@
+﻿@using Drp.Model.Customer
+
+@{
+    ViewBag.Title = "发起提现";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var customerBase = ViewData["CustomerBase"] as CustomerBase;
+}
+
+<div class="box">
+    <form  action="@Url.Action("WithdrawalSubmit")" name="widthdrawalFrm" id="widthdrawalFrm">
+        <div class="formBox">
+            <ul>
+                <li>
+                    <span class="fromText">提现金额：</span><input type="number" id="Amount" name="Amount" placeholder="请输入金额">
+                    <div class="tip">最大可提现金额：￥@(customerBase.Commission - customerBase.CashWithDrawalAmount)</div>
+                </li>
+            </ul>
+            <div class="submit active" onclick="WithdrawalSubmit()">发起提现</div>
+        </div>
+    </form>
+</div>
+<input type="hidden" id="hidMaxAmount" name="hidMaxAmount" value="@(customerBase.Commission - customerBase.CashWithDrawalAmount)"/>
+
+
+
+<script type="text/javascript">
+    function WithdrawalSubmit() {
+        debugger;
+        var amount = $("#Amount").val();
+        var maxAmount = $("#hidMaxAmount").val();
+        if (amount=="") {
+            showTip("提现金额不能为空！");
+            return false;
+        } else if (parseFloat(amount)>parseFloat(maxAmount)) {
+            showTip("提现金额不能超过" + maxAmount + "！");
+            return false;
+        }
+        else {
+            $("#widthdrawalFrm").submit();
+        }
+    }
+
+    $(function () {
+
+        //监听表单提交,变为异步提交表单
+        $("#widthdrawalFrm").on("submit", function (event) {
+            var form = this;//this代表的就是当前提交表单的DOM对象
+            //用H5的FormData对象对表单数据进行构造
+            var formData = new FormData(document.getElementById("widthdrawalFrm"));//FormData构造器接收的是一个form的DOM对象
+            debugger;
+            $.ajax({
+                url: this.action,
+                type: "POST",
+                data: formData,
+                dataType: "JSON",
+                async: true,
+                //要想用jquery的ajax来提交FormData数据,
+                //则必须要把这两项设为false
+                processData: false,
+                contentType: false,
+                //这里是防表单重复提交,可以忽略
+                beforeSend: function (xhr) {
+                    
+                },
+                complete: function (xhr, status) {
+                    
+                },
+                error: function (xhr, status, error) {
+                    showTip("请求出错!");
+                },
+                success: function (result) {
+                    debugger;
+                    if (result.IsSuccess == true) {
+                        window.location.href = "/Me/MyCenter/WithDrawalSuccess";
+                    } else {
+                        showTip(result.Message);
+                    }
+                }
+            });
+
+            //阻止表单的提交事件
+            return false;
+        });
+    });
+</script>

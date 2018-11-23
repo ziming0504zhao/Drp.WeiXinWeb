@@ -1,0 +1,272 @@
+﻿@using Drp.Common
+@using Drp.Model
+@using Drp.Model.Product
+
+@{
+    ViewBag.Title = "产品明细";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var productLine = ViewData["ProductLine"] as ProductLine;
+    var productLinePrices = ProductLinePrice.FindByList(lineId: productLine.Id);
+    decimal salePrice = 0;
+    if (null != productLinePrices && productLinePrices.Any())
+    {
+        LoggerHelper.ToLog(productLinePrices.Count.ToString());
+        foreach (var productLinePrice in productLinePrices)
+        {
+            LoggerHelper.ToLog(productLinePrice.StartDate);
+        }
+        productLinePrices = productLinePrices.Where(p => DateTime.Parse(p.StartDate) > DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd"))).ToList();
+        LoggerHelper.ToLog(productLinePrices.Count.ToString());
+        salePrice =productLinePrices.Any()? productLinePrices.OrderBy(p => p.SalePrice).First().SalePrice:0;
+    }
+}
+<link rel="stylesheet" href="/css/swiper.min.css">
+<script src="/js/swiper.min.js"></script>
+
+<div class="box">
+    <div class="banner swiper-container">
+        <div class="swiper-wrapper">
+            @{
+                if (!string.IsNullOrEmpty(productLine.ImgUrl))
+                {
+                    foreach (var imgUrl in productLine.ImgUrl.Split(','))
+                    {
+                        <div class="swiper-slide">
+                            <img src="@(ConstValue.SysConfig.BossImgUrl+imgUrl)">
+                        </div>
+                    }
+                }
+            }
+
+            @*<div class="swiper-slide"><img src="/images/banner.png">
+            </div>
+            <div class="swiper-slide"><img src="/images/banner.png">
+            </div>
+            <div class="swiper-slide"><img src="/images/banner.png">
+            </div>*@
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+    <div class="lineDetailList lineDetailMiddel clearfix">
+        <div class="price">
+            <span>￥</span><strong>@(salePrice)</strong>起
+            <div class="type">@(ConstValue.Catalog.SuitableTypeDic[productLine.SuitableTypeId])</div>
+            <div class="collection">
+                @{
+                    if (ViewData["IsLineCollects"].ToString() == "1")
+                    {
+                        <img class="noCollect" src="/images/icon-collect.png" style="display: none;">
+                        <img class="alreadyCollected" src="/images/icon-collect-active.png" style="display: inline;">
+                    }
+                    else
+                    {
+                        <img class="noCollect" src="/images/icon-collect.png">
+                        <img class="alreadyCollected" src="/images/icon-collect-active.png">
+                    }
+                }
+                
+            </div>
+        </div>
+        <p>@(productLine.LineName)</p>
+    </div>
+    <div class="positioning">
+        <strong>@(productLine.DepartCityName)</strong>
+        <div class="positioningContent swiper-container">
+            <div class="swiper-wrapper">
+                @{
+                    if (null != productLinePrices && productLinePrices.Any())
+                    {
+                        productLinePrices = productLinePrices.OrderBy(p => p.StartDate).ToList();
+                        foreach (var productLinePrice in productLinePrices)
+                        {
+                            <div class="swiper-slide">@(DateTime.Parse(productLinePrice.StartDate).ToString("MM-dd"))<br /><span>￥@(productLinePrice.SalePrice)</span></div>
+                        }
+                    }
+                }
+                @*<div class="swiper-slide">10-01<br/><span>￥5907</span></div>
+                <div class="swiper-slide">10-02<br/><span>￥5907</span></div>
+                <div class="swiper-slide">10-03<br/><span>￥5907</span></div>
+                <div class="swiper-slide">10-04<br/><span>￥5907</span></div>
+                <div class="swiper-slide">10-05<br/><span>￥5907</span></div>
+                <div class="swiper-slide">10-06<br/><span>￥5907</span></div>
+                <div class="swiper-slide">10-07<br/><span>￥5907</span></div>
+                <div class="swiper-slide">10-08<br/><span>￥5907</span></div>
+                <div class="swiper-slide">10-09<br/><span>￥5907</span></div>*@
+            </div>
+
+        </div>
+        <div class="prev arrow"><img src="/images/arrowLeft.png">
+        </div><!--左箭头-->
+        <div class="next arrow"><img src="/images/arrowRight.png">
+        </div><!--右箭头-->
+    </div>
+    <div class="membershipTab lineDetailTab">
+        <ul>
+            <li class="selected" onclick="tab('lineDetailContent')">产品特色</li>
+            <li onclick="tab('lineDetailContent')">行程信息</li>
+            <li onclick="tab('lineDetailContent')">费用须知</li>
+            <li onclick="tab('lineDetailContent')">附件信息</li>
+        </ul>
+    </div>
+    <div class="lineDetailContent" style="display: block;">
+        @(Html.Raw(productLine.Feature))
+        @*<p>求推荐？有疑惑？找优惠？直接拨打客服电话4006588799转2492，解决各种疑难问题！！</p>
+        <p>点击链接进入七十迈店铺首页查看更多海外跟队自驾游路线，北美、澳新、西欧、北欧、英国、摩洛哥、南非等N多路线~</p>
+        <p>本路线包含的机票费用为预估价格，标准如下：<br/>每年 7月1日-10月5日期间，机票预算为：人民币7000元；<br/>其他时间机票预算为：人民币5000元；<br/>如由我方代订机票，旅游费用中的机票部分，按出票当天价格多退少补；<br/>如自订机票，则退还相应机票的预算费用。
+        </p>*@
+    </div>
+    <div class="lineDetailContent">
+        @{
+            var productLineTravels = ProductLineTravel.FindByList(lineId: productLine.Id);
+            if (null != productLineTravels && productLineTravels.Any())
+            {
+                foreach (var productLineTravel in productLineTravels)
+                {
+                    <div class="serial">
+                        第<strong>@(productLineTravel.TravelDay)</strong>天 @(productLineTravel.Title)
+                    </div>
+                    @(Html.Raw(productLineTravel.Summary))
+                    if (!string.IsNullOrEmpty(productLineTravel.TripImgUrl))
+                    {
+                        <div class="lineDetailImg clearfix" >
+                            @{
+                                foreach (var imgUrl in productLineTravel.TripImgUrl.Split(','))
+                                {
+                                    <img src="@(ConstValue.SysConfig.BossImgUrl + imgUrl)">
+                                }
+                            }
+                        </div>
+                    }
+
+                    @*<div class="title">阿勇河漂流泛舟（约1小时）</div>
+                    <p>求推荐？有疑惑？找优惠？直接拨打客服电话4006588799转2492，解决各种疑难问题！！</p>
+                    <p>点击链接进入七十迈店铺首页查看更多海外跟队自驾游路线，北美、澳新、西欧、北欧、英国、摩洛哥、南非等N多路线~</p>
+                    <p>
+                        本路线包含的机票费用为预估价格，标准如下：<br/>每年 7月1日-10月5日期间，机票预算为：人民币7000元；<br/>其他时间机票预算为：人民币5000元；<br/>如由我方代订机票，旅游费用中的机票部分，按出票当天价格多退少补；<br/>如自订机票，则退还相应机票的预算费用。
+                    </p>
+                    <div class="lineDetailImg">
+                        <img src="/images/lineDetailImg1.png">
+                        <img src="/images/lineDetailImg2.png">
+                        <img src="/images/lineDetailImg1.png">
+                        <img src="/images/lineDetailImg2.png">
+                    </div>*@
+                }
+            }
+        }
+        @*<div class="serial">
+            第<strong>1</strong>天 上海-巴厘岛
+        </div>
+        <div class="title">阿勇河漂流泛舟（约1小时）</div>
+        <p>求推荐？有疑惑？找优惠？直接拨打客服电话4006588799转2492，解决各种疑难问题！！</p>
+        <p>点击链接进入七十迈店铺首页查看更多海外跟队自驾游路线，北美、澳新、西欧、北欧、英国、摩洛哥、南非等N多路线~</p>
+        <p>本路线包含的机票费用为预估价格，标准如下：<br/>每年 7月1日-10月5日期间，机票预算为：人民币7000元；<br/>其他时间机票预算为：人民币5000元；<br/>如由我方代订机票，旅游费用中的机票部分，按出票当天价格多退少补；<br/>如自订机票，则退还相应机票的预算费用。
+        </p>
+        <div class="lineDetailImg">
+            <img src="/images/lineDetailImg1.png">
+            <img src="/images/lineDetailImg2.png">
+            <img src="/images/lineDetailImg1.png">
+            <img src="/images/lineDetailImg2.png">
+        </div>*@
+    </div>
+    <div class="lineDetailContent">
+        @(Html.Raw(productLine.CostInfo))
+        @*<p>本路线包含的机票费用为预估价格，标准如下：<br/>每年 7月1日-10月5日期间，机票预算为：人民币7000元；<br/>其他时间机票预算为：人民币5000元；<br/>如由我方代订机票，旅游费用中的机票部分，按出票当天价格多退少补；<br/>如自订机票，则退还相应机票的预算费用。
+        </p>*@
+    </div>
+    <div class="lineDetailContent">
+        @{
+            if (!string.IsNullOrEmpty(productLine.Attachment))
+            {
+                foreach (var att in productLine.Attachment.Split(','))
+                {
+                    <div class="submit active"><a href="@(ConstValue.SysConfig.BossImgUrl + att)">点击下载</a>
+                    </div>
+                }
+
+            }
+        }
+        @*<div class="submit active">下载xxxxxx.doc</div>
+        <div class="submit active">下载xxxxxx.doc</div>*@
+    </div>
+
+    <!-- 新增 2018-10-22 -->
+    <div class="lineDetailFooter">
+        @*<img src="/images/2wm.png" alt="">*@
+        <img src="@ViewData["ShowQrCodeUrl"]" alt="">
+        <p>请扫码关注后咨询</p>
+        @*<div class="consulting active">咨询</div>*@
+    </div>
+    <!-- 新增 2018-10-22 -->
+</div>
+
+
+
+<script type="text/javascript">
+		$(function(){
+			var mySwiper = new Swiper('.banner', {
+				autoHeight: true, //高度随内容变化
+				autoplay: true,//可选选项，自动滑动
+				pagination: {
+				    el: '.swiper-pagination',
+				  },
+			})
+			var mySwiper2 = new Swiper('.positioningContent', {
+				// autoplay: true,//可选选项，自动滑动
+				autoHeight: true, //高度随内容变化
+				navigation: {
+			      nextEl: '.next',
+			      prevEl: '.prev',
+			    },
+			    slidesPerView:'5',
+			    spaceBetween:4,
+			})
+			//收藏
+			$(".noCollect").click(function () {
+			    debugger;
+			    if ("@(ViewData["CustomerId"].ToString())"=="0") {
+			        window.location.href = "/Me/JoinUs/Index";
+			    }
+				if($('.alreadyCollected').is(':hidden')){
+					$(this).hide();
+					$('.alreadyCollected').show();
+				}
+
+				$.ajax({
+				    type: "post",
+				    url: '/Home/Product/Collect',
+				    async: false, // 使用同步方式  
+				    // 1 需要使用JSON.stringify 否则格式为 a=2&b=3&now=14...  
+				    // 2 需要强制类型转换，否则格式为 {"a":"2","b":"3"}  
+				    data: JSON.stringify({lineId:@(productLine.Id),state:1}),
+				    contentType: "application/json; charset=utf-8",
+				    dataType: "json",
+				    success: function (data) {
+				        
+				    } 
+				});
+
+			})
+			//取消收藏
+			$(".alreadyCollected").click(function(){
+				if($('.noCollect').is(':hidden')){
+					$(this).hide();
+					$('.noCollect').show();
+				}
+
+				$.ajax({
+				    type: "post",
+				    url: '/Home/Product/Collect',
+				    async: false, // 使用同步方式  
+				    // 1 需要使用JSON.stringify 否则格式为 a=2&b=3&now=14...  
+				    // 2 需要强制类型转换，否则格式为 {"a":"2","b":"3"}  
+				    data: JSON.stringify({lineId:@(productLine.Id),state:0}),
+				    contentType: "application/json; charset=utf-8",
+				    dataType: "json",
+				    success: function (data) {
+				        
+				    } 
+				});
+			})
+		})
+</script>

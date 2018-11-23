@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root xmlns="http://m2sa.net/Schema/SqlMapping">
+  <module moduleName="WeixinKeywordRepository" dbName="Drp">
+    <sqlWrap  sqlName="Insert"  supportDBType="MySql,SqlServer">
+      INSERT INTO Weixin_Keyword
+      ([WeixinId]
+      ,[Code]
+      ,[Name]
+      ,[ReplyType]
+      ,[Contents]
+      ,[IsValid]
+      ,[CreateUserName]
+      ,[CreateDate]
+      ,[CreateLoginId])
+      VALUES
+      (@WeixinId
+      ,@Code
+      ,@Name
+      ,@ReplyType
+      ,@Contents
+      ,1
+      ,@UserName
+      ,GETDATE()
+      ,@LoginId)
+      SELECT @@IDENTITY
+    </sqlWrap>
+
+    <sqlWrap  sqlName="Update"  supportDBType="MySql,SqlServer">
+      UPDATE Weixin_Keyword
+      SET [WeixinId] = @WeixinId
+      ,[Code] = @Code
+      ,[Name] = @[Name]
+      ,[ReplyType] = @ReplyType
+      ,[Contents] = @Contents
+      ,[UpdateDate] = GETDATE()
+      ,[UpdateLoginId] = @LoginId
+      WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap  sqlName="Delete"  supportDBType="MySql,SqlServer">
+      DELETE FROM Weixin_Keyword  WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SelectById" supportDBType="MySql,SqlServer">
+      SELECT * FROM  [dbo].[Weixin_Keyword] WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap  sqlName="FindByCode"  supportDBType="MySql,SqlServer">
+      SELECT * FROM Weixin_Keyword  WITH(NOLOCK) WHERE Code=@Code AND IsValid=1
+    </sqlWrap>
+
+    <sqlWrap sqlName="FindByList" supportDBType="MySql,SqlServer">
+      SELECT * FROM  Weixin_Keyword WHERE 1=1
+      #if(@WeixinId){ AND WeixinId=@WeixinId}
+      #if(@Code){ AND Code=@Code}
+      #if(@Name){ AND Name like '%'+@Name+'%'}
+      #if(@ReplyType){ AND ReplyType=@ReplyType}
+      #if(@IsValid){ AND IsValid=@IsValid}
+      ORDER BY Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SetValid" supportDBType="MySql,SqlServer">
+      update Weixin_Keyword set IsValid=@IsValid,UpdateDate=getdate(),UpdateLoginId=@LoginId
+      where Id in (@IdList) and IsValid&lt;&gt;@IsValid;
+    </sqlWrap>
+    
+  </module>
+</root>

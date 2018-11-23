@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root xmlns="http://m2sa.net/Schema/SqlMapping">
+  <module moduleName="ProductLineRepository" dbName="Drp">
+    <sqlWrap  sqlName="Insert"  supportDBType="MySql,SqlServer">
+      INSERT INTO Product_Line
+           ([LineName]
+           ,[SubTitle]
+           ,[SuitableTypeId]
+           ,[ProductCategoryId]
+           ,[DepartCityId]
+           ,[DepartCityName]
+           ,[ReturnCityId]
+           ,[ReturnCityName]
+           ,[Days]
+           ,[Nights]
+           ,[LineTypeId]
+           ,[DestTypeId]
+           ,[Descriptions]
+           ,[SortNo]
+           ,[ImgUrl]
+           ,[WeChatAdUrl]
+           ,[SellUnitId]
+           ,[Feature]
+           ,[CostInfo]
+           ,[Attention]
+           ,[Remark]
+           ,[Attachment]
+           ,[IsValid]
+           ,[CreateUserName]
+           ,[CreateDate]
+           ,[CreateLoginId])
+     VALUES
+           (@LineName
+           ,@SubTitle
+           ,@SuitableTypeId
+           ,@ProductCategoryId
+           ,@DepartCityId
+           ,@DepartCityName
+           ,@ReturnCityId
+           ,@ReturnCityName
+           ,@Days
+           ,@Nights
+           ,@LineTypeId
+           ,@DestTypeId
+           ,@Descriptions
+           ,@SortNo
+           ,@ImgUrl
+           ,@WeChatAdUrl
+           ,@SellUnitId
+           ,@Feature
+           ,@CostInfo
+           ,@Attention
+           ,@Remark
+           ,@Attachment
+           ,1
+           ,@UserName
+           ,GETDATE()
+           ,@LoginId)
+      SELECT @@IDENTITY
+    </sqlWrap>
+    
+    <sqlWrap  sqlName="Update"  supportDBType="MySql,SqlServer">
+      UPDATE Product_Line
+         SET [LineName] = @LineName
+            ,[SubTitle] = @SubTitle
+            ,[SuitableTypeId] = @SuitableTypeId
+            ,[ProductCategoryId] = @ProductCategoryId
+            ,[DepartCityId] = @DepartCityId
+            ,[DepartCityName] = @DepartCityName
+            ,[ReturnCityId] = @ReturnCityId
+            ,[ReturnCityName] = @ReturnCityName
+            ,[Days] = @Days
+            ,[Nights] = @Nights
+            ,[LineTypeId] = @LineTypeId
+            ,[DestTypeId] = @DestTypeId
+            ,[Descriptions] = @Descriptions
+            ,[SortNo] = @SortNo
+            ,[ImgUrl] = @ImgUrl
+            ,[WeChatAdUrl] = @WeChatAdUrl
+            ,[SellUnitId] = @SellUnitId
+            ,[Feature] = @Feature
+            ,[CostInfo] = @CostInfo
+            ,[Attention] = @Attention
+            ,[Remark] = @Remark
+            ,[Attachment] = @Attachment
+            ,[UpdateDate] = GETDATE()
+            ,[UpdateLoginId] = @LoginId
+       WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SelectById" supportDBType="MySql,SqlServer">
+      SELECT * FROM  [Product_Line] WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="FindByList" supportDBType="MySql,SqlServer">
+      SELECT * FROM Product_Line WHERE 1=1
+      #if(@LineName){ AND LineName like '%'+@LineName+'%'}
+      #if(@SuitableTypeId){ AND SuitableTypeId=@SuitableTypeId}
+      #if(@ProductCategoryId){ AND ProductCategoryId=@ProductCategoryId}
+      #if(@DepartCityId){ AND DepartCityId=@DepartCityId}
+      #if(@ReturnCityId){ AND ReturnCityId=@ReturnCityId}
+      #if(@IsValid){ AND IsValid=@IsValid}
+      ORDER BY Id
+    </sqlWrap>
+
+    <sqlWrap  sqlName="UpdateLineDests"  supportDBType="3">
+      UPDATE Product_LineDest SET IsValid=0,UpdateDate=GETDATE(),UpdateLoginId=@LoginId WHERE LineId=@LineId;
+      UPDATE Product_LineDest SET IsValid=1 WHERE LineId=@LineId AND DestinationId IN (@DestIdList);
+      INSERT INTO Product_LineDest(LineId,DestinationId,IsValid,CreateUserName,CreateDate,CreateLoginId)
+      SELECT @LineId,Id,1,@UserName,GETDATE(),@LoginId FROM Sys_Destination_Base WHERE Id IN (@DestIdList) AND IsValid=1
+      AND Id NOT IN (SELECT DestinationId FROM Product_LineDest WHERE LineId=@LineId)
+    </sqlWrap>
+
+    <sqlWrap  sqlName="FindDestIds"  supportDBType="3">
+      SELECT DestinationId FROM Product_LineDest WHERE LineId=@LineId AND IsValid=1
+    </sqlWrap>
+
+    <sqlWrap sqlName="SetValid" supportDBType="MySql,SqlServer">
+      update Product_Line set IsValid=@IsValid,UpdateDate=getdate(),UpdateLoginId=@LoginId
+      where Id in (@IdList) and IsValid&lt;&gt;@IsValid;
+    </sqlWrap>
+
+  </module>
+</root>

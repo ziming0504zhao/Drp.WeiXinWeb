@@ -1,0 +1,207 @@
+﻿@using Drp.Model
+@using Drp.Model.Customer
+@using Drp.Model.Product
+@using Drp.Model.Sys
+
+@{
+    ViewBag.Title = "产品列表";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var productCategories = ViewData["ProductCategories"] as IList<DictionaryBase>;
+    var destinationBases = ViewData["DestinationBases"] as IList<DestinationBase>;
+    var productLines = ViewData["ProductLines"] as IList<ProductLine>;
+    var customerBase = ViewData["CustomerBase"] as CustomerBase;
+}
+
+<!-- 选择插件 -->
+<link rel="stylesheet" href="/js/mobiscroll-2.13.2/style/mobiscroll.custom-2.17.0.min.css">
+<script type="text/javascript" src="/js/mobiscroll-2.13.2/script/mobiscroll.custom-2.17.0.min.js"></script>
+<!-- 选择插件结束 -->
+<script type="text/javascript">
+    $(function() {
+        $("#lineType").mobiscroll().select({
+            display: 'bottom', //显示方式
+            rows: 3,
+            animate: "pop", //弹出特效
+            setText: '确定', //确认按钮名称
+            cancelText: '取消', //取消按钮名籍我
+            headerText: '线路类型',
+            placeholder: "线路类型",
+            onClose: function(valueText, inst) {
+                if (inst == 'set') {
+                    console.log(valueText);
+                }
+            }
+        });
+        $("#lineCategory").mobiscroll().select({
+            display: 'bottom', //显示方式
+            rows: 3,
+            animate: "pop", //弹出特效
+            setText: '确定', //确认按钮名称
+            cancelText: '取消', //取消按钮名籍我
+            headerText: '线路类别',
+            placeholder: "线路类别",
+            onClose: function(valueText, inst) {
+                if (inst == 'set') {
+                    console.log(valueText);
+                }
+            }
+        });
+        $("#destination").mobiscroll().select({
+            display: 'bottom', //显示方式
+            rows: 3,
+            animate: "pop", //弹出特效
+            setText: '确定', //确认按钮名称
+            cancelText: '取消', //取消按钮名籍我
+            headerText: '目的地',
+            placeholder: "目的地",
+            onClose: function(valueText, inst) {
+                if (inst == 'set') {
+                    console.log(valueText);
+                }
+            }
+        });
+    });
+</script>
+
+<div class="box">
+    <div class="lineDetailBox">
+        <div class="lineDetailHead clearfix">
+            <ul>
+                <li>
+                    <select name="lineType" id="lineType" onchange="LineListJs.LoadProductLine();">
+                        <option value="">线路类型</option>
+                        @{
+                            if (null != ConstValue.Catalog.SuitableTypeDic && ConstValue.Catalog.SuitableTypeDic.Any())
+                            {
+                                foreach (var key in ConstValue.Catalog.SuitableTypeDic.Keys)
+                                {
+                                    <option value="@key" @(null != ViewData["SuitableTypeId"] && ViewData["SuitableTypeId"].ToString().Equals(key.ToString()) ? "selected=\"selected\"" : "")>@ConstValue.Catalog.SuitableTypeDic[key]</option>
+                                }
+                            }
+                        }
+
+                    </select>
+                </li>
+                <li>
+                    <select name="lineCategory" id="lineCategory" onchange="LineListJs.LoadProductLine();">
+                        <option value="">线路类别</option>
+                        @{
+                            if (null != productCategories && productCategories.Any())
+                            {
+                                foreach (var item in productCategories)
+                                {
+                                    <option value="@item.Id" @(null != ViewData["ProductCategoryId"] && ViewData["ProductCategoryId"].ToString().Equals(item.Id.ToString()) ? "selected=\"selected\"" : "")>@item.Name</option>
+                                }
+                            }
+                        }
+                        @*<option value="1">线路类别1</option>*@
+                    </select>
+                </li>
+                <li>
+                    <select name="destination" id="destination" onchange="LineListJs.LoadProductLine();">
+                        <option value="">目的地</option>
+                        @{
+                            if (null != destinationBases)
+                            {
+                                foreach (var item in destinationBases)
+                                {
+                                    <option value="@item.Id" @(null != ViewData["DestId"] && ViewData["DestId"].ToString().Equals(item.Id.ToString()) ? "selected=\"selected\"" : "")>@item.Name</option>
+                                }
+                            }
+                        }
+
+                        @*<option value="1">目的地1</option>*@
+                    </select>
+                </li>
+            </ul>
+        </div>
+        @{
+            if (null != productLines && productLines.Any())
+            {
+                foreach (var productLine in productLines)
+                {
+                    var productLinePrices = ProductLinePrice.FindByList(lineId: productLine.Id);
+                    if (null == productLinePrices || !productLinePrices.Any())
+                    {
+                        continue;
+                    }
+                    productLinePrices = productLinePrices.OrderBy(p => p.SalePrice).ToList();
+                    var startDate = productLinePrices.OrderBy(p => p.StartDate).ToList().First().StartDate;
+                    var endDate = productLinePrices.OrderByDescending(p => p.StartDate).ToList().First().StartDate;
+                    var imgUrl = !string.IsNullOrEmpty(productLine.ImgUrl) ? productLine.ImgUrl.Split(',')[0] : productLine.ImgUrl;
+
+                    <div class="lineDetailList clearfix">
+                        <img src="@(ConstValue.SysConfig.BossImgUrl + imgUrl)">
+                        <div class="lineDetailListRight">
+                            <p><a href="@Url.Action("Index","Product", new { lineId = productLine.Id })">@(productLine.LineName)</a></p>
+                            <div class="price">
+                                <span>￥</span><strong>@(productLinePrices.First().SalePrice)</strong>起
+                            </div>
+                        </div>
+                        <div class="lineDetailListBottom">
+                            <div class="date">日期：@(DateTime.Parse(startDate).ToString("MM.dd"))-@(DateTime.Parse(endDate).ToString("MM.dd"))</div>
+                            @{
+                                if (null != customerBase && customerBase.CheckState == 1)
+                                {
+                                    <div class="download active" onclick="LineListJs.ToDownLoadPosters(@(productLine.Id));">下载海报</div>
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+            }
+        }
+
+        @*<div class="lineDetailList clearfix">
+            <img src="/images/scenery.png">
+            <div class="lineDetailListRight">
+                <p>北京往返昆明大理丽江泸沽湖8日游（纯玩无购物+古雪山+深度环湖游+风情篝火晚会）</p>
+                <div class="price"><span>￥</span><strong>5688</strong>起
+                </div>
+            </div>
+            <div class="lineDetailListBottom">
+                <div class="date">日期：9.15-10.24</div>
+                <div class="download active">下载海报</div>
+            </div>
+        </div>*@
+        
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var LineListJs = {
+        LoadProductLine: function() {
+            var str = "";
+            if ($("#lineType").val()!="") {
+                str += "suitableTypeId=" + $("#lineType").val();
+            }
+            if ($("#lineCategory").val() != "") {
+                if (str !="") {
+                    str += "&";
+                } 
+                str += "productCategoryId=" + $("#lineCategory").val();
+            }
+            if ($("#destination").val() != "") {
+                if (str != "") {
+                    str += "&";
+                }
+                str += "destId=" + $("#destination").val();
+            }
+            var url = "/home/Product/lineList";
+            if (str!="") {
+                url += "?" + str;
+            }
+            window.location.href = url;
+        },
+        ToDownLoadPosters:function(id) {
+            window.location.href = "/home/Product/DownLoadPosters/"+id;
+        }
+    };
+
+
+    $(function () {
+        
+    });
+
+</script>

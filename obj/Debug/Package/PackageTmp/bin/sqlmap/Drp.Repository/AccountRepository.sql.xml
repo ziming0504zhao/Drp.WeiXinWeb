@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root xmlns="http://m2sa.net/Schema/SqlMapping">
+  <module moduleName="AccountRepository" dbName="Drp">
+    <sqlWrap  sqlName="Insert"  supportDBType="MySql,SqlServer">
+      INSERT INTO Sys_Account
+      ([Name]
+      ,[UserName]
+      ,[Pwd]
+      ,[DeptId]
+      ,[Sex]
+      ,[IsValid]
+      ,[CreateUserName]
+      ,[CreateDate]
+      ,[CreateLoginId])
+      VALUES
+      (@Name
+      ,@UName
+      ,@Pwd
+      ,@DeptId
+      ,@Sex
+      ,1
+      ,@UserName
+      ,GETDATE()
+      ,@LoginId)
+      SELECT @@IDENTITY
+    </sqlWrap>
+    
+    <sqlWrap  sqlName="Update"  supportDBType="MySql,SqlServer">
+      UPDATE Sys_Account
+      SET [Name] = @Name
+      ,[UserName] = @UName
+      ,[Pwd] = @Pwd
+      ,[DeptId] = @DeptId
+      ,[Sex] = @Sex
+      ,[UpdateDate] = GETDATE()
+      ,[UpdateLoginId] = @LoginId
+      WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SelectById" supportDBType="MySql,SqlServer">
+      SELECT *,UserName AS UName FROM  [Sys_Account] WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="FindByList" supportDBType="MySql,SqlServer">
+      SELECT *,UserName AS UName FROM Sys_Account WHERE 1=1
+      #if(@Name){ AND Name like '%'+@Name+'%'}
+      #if(@DeptId){ AND DeptId=@DeptId}
+      #if(@IsValid){ AND IsValid=@IsValid}
+      ORDER BY Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="FindByRoleId" supportDBType="MySql,SqlServer">
+      SELECT * FROM Sys_Account WHERE ID IN (SELECT AccountId FROM Sys_AccountRole WHERE RoleId=@RoleId AND IsValid=1) AND IsValid=1
+    </sqlWrap>
+
+    <sqlWrap sqlName="SetValid" supportDBType="MySql,SqlServer">
+      update Sys_Account set IsValid=@IsValid,UpdateDate=getdate(),UpdateLoginId=@LoginId
+      where Id in (@IdList) and IsValid&lt;&gt;@IsValid;
+    </sqlWrap>
+
+    <sqlWrap  sqlName="UpdateRoles"  supportDBType="3">
+      UPDATE Sys_AccountRole SET IsValid=0,UpdateDate=GETDATE(),UpdateLoginId=@LoginId WHERE AccountId=@AccountId;
+      UPDATE Sys_AccountRole SET IsValid=1 WHERE AccountId=@AccountId AND RoleId IN (@RoleIdList);
+      INSERT INTO Sys_AccountRole(AccountId,RoleId,IsValid,CreateUserName,CreateDate,CreateLoginId)
+      SELECT @AccountId,Id,1,@UserName,GETDATE(),@LoginId FROM Sys_Role WHERE Id IN (@RoleIdList) AND IsValid=1
+      AND Id NOT IN (SELECT RoleId FROM Sys_AccountRole WHERE AccountId=@AccountId)
+    </sqlWrap>
+
+    <sqlWrap  sqlName="UpdateDataAuths"  supportDBType="3">
+      UPDATE Sys_AccountDataAuth SET IsValid=0,UpdateDate=GETDATE(),UpdateLoginId=@LoginId WHERE AccountId=@AccountId;
+      UPDATE Sys_AccountDataAuth SET IsValid=1 WHERE AccountId=@AccountId AND DeptId IN (@DeptIdList);
+      INSERT INTO Sys_AccountDataAuth(AccountId,DeptId,IsValid,CreateUserName,CreateDate,CreateLoginId)
+      SELECT @AccountId,Id,1,@UserName,GETDATE(),@LoginId FROM Sys_Department WHERE Id IN (@DeptIdList) AND IsValid=1
+      AND Id NOT IN (SELECT DeptId FROM Sys_AccountDataAuth WHERE AccountId=@AccountId)
+    </sqlWrap>
+
+    <sqlWrap sqlName="FindDeptIds" supportDBType="MySql,SqlServer">
+      SELECT DeptId FROM Sys_AccountDataAuth WHERE AccountId=@AccountId AND IsValid=1
+    </sqlWrap>
+    
+  </module>
+</root>

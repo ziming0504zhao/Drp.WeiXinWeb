@@ -1,0 +1,60 @@
+﻿@using Drp.Model
+@using Drp.Model.Customer
+@using Drp.Model.Product
+
+@{
+    ViewBag.Title = "我的收藏";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var customerLineCollects = ViewData["CustomerLineCollects"] as IList<CustomerLineCollect>;
+}
+
+
+<div class="box">
+    <div class="">
+        @{
+            if (null != customerLineCollects && customerLineCollects.Any())
+            {
+                foreach (var customerLineCollect in customerLineCollects)
+                {
+                    var productLine = customerLineCollect.ProductLine;
+                    if (null == productLine)
+                    {
+                        continue;
+                    }
+                    var productLinePrices = ProductLinePrice.FindByList(lineId: productLine.Id);
+                    if (null == productLinePrices || !productLinePrices.Any())
+                    {
+                        continue;
+                    }
+                    productLinePrices = productLinePrices.OrderBy(p => p.SalePrice).ToList();
+                    var startDate = productLinePrices.OrderBy(p => p.StartDate).ToList().First().StartDate;
+                    var endDate = productLinePrices.OrderByDescending(p => p.StartDate).ToList().First().StartDate;
+                    var imgUrl = !string.IsNullOrEmpty(productLine.ImgUrl) ? productLine.ImgUrl.Split(',')[0] : productLine.ImgUrl;
+
+                    <div class="lineDetailList collectionList clearfix">
+                        <img src="@(ConstValue.SysConfig.BossImgUrl + imgUrl)">
+                        <div class="lineDetailListRight">
+                            <p><a href="@Url.Action("Index","Product", new {area="Home", lineId = productLine.Id })">@(productLine.LineName)</a></p>
+                            <div class="price">
+                                <span>￥</span><strong>@(productLinePrices.First().SalePrice)</strong>起
+                                <div class="date">日期：@(DateTime.Parse(startDate).ToString("MM.dd"))-@(DateTime.Parse(endDate).ToString("MM.dd"))</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        }
+
+        @*<div class="lineDetailList collectionList clearfix">
+            <img src="/images/scenery.png">
+            <div class="lineDetailListRight">
+                <p>北京往返昆明大理丽江泸沽湖8日游（纯玩无购物+古雪山+深度环湖游+风情篝火晚会）</p>
+                <div class="price"><span>￥</span><strong>5688</strong>起
+                    <div class="date">日期：9.15-10.24</div>
+                </div>
+            </div>
+        </div>*@
+
+    </div>
+</div>

@@ -1,0 +1,103 @@
+﻿@using Drp.Model.Customer
+@using Drp.Model.Order
+
+@{
+    ViewBag.Title = "销售排名";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var orderBases = ViewData["OrderBases"] as IList<OrderBaseInfo>;
+    var customerBase = ViewData["CustomerBase"] as CustomerBase;
+    var customerOrderCommissions = ViewData["CustomerOrderCommissions"] as IList<CustomerOrderCommission>;
+    var customerWithdrawalRecords = ViewData["CustomerWithdrawalRecords"] as IList<CustomerWithdrawalRecord>;
+}
+
+<div class="box">
+    <div class="membershipBox">
+        <div class="membershipHead salesCommissionsHead clearfix">
+            <div class="borderRight">总销售金额<strong>￥@(null != orderBases && orderBases.Any() ? orderBases.Sum(p => p.TotalAmount) : 0)</strong>
+            </div>
+            <div class="borderRight">总提成金额<strong>￥@(customerBase.Commission)</strong>
+            </div>
+            <div>可提现金额<strong>￥@(customerBase.Commission - customerBase.CashWithDrawalAmount)</strong>
+            </div>
+            <div class="withdrawal active" onclick="ToWithdrawal();">发起提现</div>
+        </div>
+        <div class="membershipTab">
+            <ul>
+                <li class="selected borderRight" onclick="tab('membershipContent')">提成明细</li>
+                <li onclick="tab('membershipContent')">提现明细</li>
+            </ul>
+        </div>
+        <div class="membershipContent clearfix" style="display: block;">
+            <table cellspacing="0">
+                <tr>
+                    <th>订单号</th>
+                    <th>订单金额</th>
+                    <th>提成金额</th>
+                </tr>
+                @{
+                    if (null != customerOrderCommissions && customerOrderCommissions.Any())
+                    {
+                        foreach (var customerOrderCommission in customerOrderCommissions)
+                        {
+                            if (null != customerOrderCommission && null != customerOrderCommission.OrderBase)
+                            {
+                                <tr>
+                                    <td>@(customerOrderCommission.OrderBase.OrderNo)</td>
+                                    <td>￥@(customerOrderCommission.OrderBase.TotalAmount)</td>
+                                    <td>￥@(customerOrderCommission.OrderBase.ChannelCommission)</td>
+                                </tr>
+                            }
+                        }
+                    }
+                }
+                @*<tr>
+                    <td>102322</td>
+                    <td>￥560.00</td>
+                    <td>￥56940.00</td>
+                </tr>*@
+            </table>
+        </div>
+        <div class="membershipContent clearfix">
+            <table cellspacing="0">
+                <tr>
+                    <th>提现金额</th>
+                    <th>提现时间</th>
+                    <th>处理状态</th>
+                </tr>
+                @{
+                    if (null != customerWithdrawalRecords && customerWithdrawalRecords.Any())
+                    {
+                        foreach (var customerWithdrawalRecord in customerWithdrawalRecords)
+                        {
+                            <tr>
+                                <td>￥@(customerWithdrawalRecord.Amount)</td>
+                                <td>@(customerWithdrawalRecord.CreateDate.ToString("yyyy-MM-dd"))</td>
+                                <td>@(customerWithdrawalRecord.Status == 0 ? "待处理" : "己处理")</td>
+                            </tr>
+                        }
+                    }
+                }
+
+                @*<tr>
+                    <td>102322</td>
+                    <td>￥560.00</td>
+                    <td>2018-10-14</td>
+                    <td>待处理</td>
+                </tr>*@
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    function ToWithdrawal() {
+        window.location.href = "/Me/MyCenter/Withdrawal";
+    }
+
+    $(function () {
+
+    });
+</script>

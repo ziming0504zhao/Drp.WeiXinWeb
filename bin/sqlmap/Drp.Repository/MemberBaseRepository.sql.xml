@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root xmlns="http://m2sa.net/Schema/SqlMapping">
+  <module moduleName="MemberBaseRepository" dbName="Drp">
+    <sqlWrap  sqlName="Insert"  supportDBType="MySql,SqlServer">
+      INSERT INTO Member_Base
+      ([Name]
+      ,[Gender]
+      ,[Mobile]
+      ,[IsMobileValidate]
+      ,[Email]
+      ,[IsEmailValidate]
+      ,[Passport]
+      ,[RegisterFrom]
+      ,[TotalPoint]
+      ,[UsedPoint]
+      ,[FreezePoint]
+      ,[IsValid]
+      ,[CreateUserName]
+      ,[CreateDate]
+      ,[CreateLoginId])
+      VALUES
+      (@Name
+      ,@Gender
+      ,@Mobile
+      ,@IsMobileValidate
+      ,@Email
+      ,@IsEmailValidate
+      ,@Passport
+      ,@RegisterFrom
+      ,@TotalPoint
+      ,@UsedPoint
+      ,@FreezePoint
+      ,1
+      ,@UserName
+      ,GETDATE()
+      ,@LoginId)
+      SELECT @@IDENTITY
+    </sqlWrap>
+
+    <sqlWrap  sqlName="Update"  supportDBType="MySql,SqlServer">
+      UPDATE Member_Base
+      SET [Name] = Name
+      ,[Gender] = @Gender
+      ,[Mobile] = @Mobile
+      ,[IsMobileValidate] = @IsMobileValidate
+      ,[Email] = @Email
+      ,[IsEmailValidate] = @IsEmailValidate
+      ,[Passport] = @Passport
+      ,[RegisterFrom] = @RegisterFrom
+      ,[TotalPoint] = @TotalPoint
+      ,[UsedPoint] = @UsedPoint
+      ,[FreezePoint] = @FreezePoint
+      ,[UpdateDate] = GETDATE()
+      ,[UpdateLoginId] = @LoginId
+      WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SelectById" supportDBType="MySql,SqlServer">
+      SELECT * FROM Member_Base WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap  sqlName="FindByList"  supportDBType="MySql,SqlServer">
+      SELECT * FROM Member_Base WHERE 1=1
+      #if(@Name){ AND Name like '%'+@Name+'%'}
+      #if(@Mobile){ AND Mobile=@Mobile}
+      #if(@Email){ AND Email=@Email}
+      #if(@IsValid){ AND IsValid=@IsValid}
+      ORDER BY Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SetValid" supportDBType="MySql,SqlServer">
+      update Member_Base set IsValid=@IsValid,UpdateDate=getdate(),UpdateLoginId=@LoginId
+      where Id in (@IdList) and IsValid&lt;&gt;@IsValid;
+    </sqlWrap>
+
+  </module>
+</root>

@@ -1,0 +1,87 @@
+﻿@using Drp.Model
+@using Drp.Model.Customer
+@using Drp.Model.Order
+@using Drp.Model.WeiXin
+
+@{
+    ViewBag.Title = "个人中心";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var weixinUser = ViewData["WeixinUser"] as WeixinUser;
+
+    var customerBase = ViewData["CustoemrBase"] as CustomerBase;
+
+    var customerCards = ViewData["CustomerCards"] as IList<CustomerCard>;
+    var orderBases = ViewData["OrderBases"] as IList<OrderBaseInfo>;
+    var customerBases = ViewData["CustomerBases"] as IList<CustomerBase>;
+}
+
+<div class="box">
+    <div class="personalCenterBox">
+        <div class="personalCenterHead clearfix">
+            <div class="headPortrait"><img src="@(null!= weixinUser? weixinUser.HeaderImage:"/images/head.png")" alt=""></div>
+            <div class="basicInformation">
+                <p><strong>@(customerBase.Name)</strong><span>(@(ConstValue.Catalog.CheckStateDic[customerBase.CheckState]))</span></p>
+                <div class="relationship">@(ConstValue.Catalog.CustomerTypeDic[customerBase.TypeId])</div>
+            </div>
+        </div>
+        <div class="personalCenterMiddle clearfix">
+            <div class="borderRight">会员卡<span>@(customerCards.Count)张</span></div>
+            <div class="borderRight">订单数<span>@(null!= orderBases && orderBases.Any()? orderBases.Count:0)单</span></div>
+            <div class="borderRight">销售提成<span>￥@(customerBase.Commission)</span></div>
+            <div>粉丝数<span>@(customerBases.Count)</span></div>
+        </div>
+        <div class="personalCenterContent clearfix">
+            <ul>
+                <li><img src="/images/icon1.png">
+                    @{
+                        if (customerBase.CheckState == 1)
+                        {
+                            <a href="@Url.Action("PersonalInformation1", new {customerId = customerBase.Id})"><strong>个人信息</strong></a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("PersonalInformation", new {customerId = customerBase.Id})"><strong>个人信息</strong></a>
+                            if (string.IsNullOrEmpty(customerBase.IdCardImgUrl1) || string.IsNullOrEmpty(customerBase.IdCardImgUrl2) || string.IsNullOrEmpty(customerBase.MyPhotoUrl))
+                            {
+                                <span > 未完善 </span>
+                            }
+                        }
+                    }
+                </li>
+                @{
+                    if (null != customerBase && customerBase.CheckState == 1)
+                    {
+                        <li>
+                            <img src="/images/icon2.png">
+                            <a href="@Url.Action("SalesCommissions")"><strong>我的提成</strong></a>
+                        </li>
+                    }
+                }
+                
+                <li><img src="/images/icon5.png">
+                    <a href="@Url.Action("MemberCard")"><strong>会员卡</strong></a>
+                </li>
+                <li><img src="/images/icon4.png">
+                    <a href="@Url.Action("SalesRanking")"><strong>销售排名</strong></a>
+                </li>
+                @{
+                    if (null != customerBase && customerBase.CheckState == 1)
+                    {
+                        <li>
+                            <img src="/images/icon6.png">
+                            <a href="@Url.Action("Fans")"><strong>我的粉丝</strong></a>
+                        </li>
+                    }
+                }
+                <li><img src="/images/icon5.png">
+                    <a href="@Url.Action("BankAccount")"><strong>银行账号</strong></a>
+                </li>
+                <li><img src="/images/icon7.png">
+                    <a href="@Url.Action("Collection")"><strong>我的收藏</strong></a>
+                </li>
+                <li>@*<img src="/images/icon8.png"><strong>安全退出</strong>*@</li>
+            </ul>
+        </div>
+    </div>
+</div>

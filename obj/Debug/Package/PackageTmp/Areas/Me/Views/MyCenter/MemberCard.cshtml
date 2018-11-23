@@ -1,0 +1,133 @@
+﻿@using Drp.Model.Card
+@using Drp.Model.Customer
+@using Drp.Model.Order
+
+@{
+    ViewBag.Title = "会员卡";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var customerCards = ViewData["CustomerCards"] as IList<CustomerCard>;
+    var cardEquities = ViewData["CardEquities"] as IList<CardEquity>;
+    var equityCount = 0;
+    var equityUsedCount = 0;
+    if (null != customerCards && customerCards.Any())
+    {
+        cardEquities = cardEquities.Where(p => customerCards.Any(c => c.CardId == p.CardId)).ToList();
+        equityCount = cardEquities.Sum(p => p.EquityCount);
+        equityUsedCount = cardEquities.Sum(p => p.EquityUsedCount);
+    }
+}
+
+
+<div class="box">
+    <div class="membershipBox">
+        <div class="membershipHead clearfix">
+            <div class="borderRight">会员卡数<strong>@(null!= customerCards? customerCards.Count:0)张</strong></div>
+            <div class="borderRight">权益次数<strong>@(equityCount)次</strong></div>
+            <div>已使用权益<strong>@(equityUsedCount)次</strong></div>
+        </div>
+        <div class="membershipTab">
+            <ul>
+                <li class="selected borderRight" onclick="tab('membershipContent')">购卡明细</li>
+                <li onclick="tab('membershipContent')">使用明细</li>
+            </ul>
+        </div>
+        <div class="membershipContent clearfix" style="display: block;">
+            <table cellspacing="0">
+                <tr>
+                    <th>卡号</th>
+                    <th>卡类型</th>
+                    <th>权益</th>
+                </tr>
+                @{
+                    if (null != customerCards && customerCards.Any())
+                    {
+                        foreach (var customerCard in customerCards)
+                        {
+                            var card = customerCard.CardBase;
+                            if (null != card)
+                            {
+                                var productCategoryName = "";
+                                if (null!= card.CardEquities && card.CardEquities.Any())
+                                {
+                                    foreach (var cardEquity in card.CardEquities)
+                                    {
+                                        productCategoryName += cardEquity.ProductCategoryName + cardEquity.EquityCount + "次" + ",";
+                                    }
+                                    productCategoryName = !string.IsNullOrEmpty(productCategoryName) && productCategoryName.EndsWith(",") ? productCategoryName.TrimEnd(',') : productCategoryName;
+                                }
+
+                                <tr>
+                                    <td>@(card.CardCode)</td>
+                                    <td>@(null!=card.CardType ?card.CardType.TypeName:string.Empty)</td>
+                                    <td>@(productCategoryName)</td>
+                                </tr>
+                            }
+                        }
+                    }
+                }
+                @*<tr>
+                    <td>102322</td>
+                    <td>邮轮短线卡</td>
+                    <td>短线2次，长线1次</td>
+                </tr>*@
+            </table>
+        </div>
+        <div class="membershipContent clearfix">
+            <table cellspacing="0">
+                <tr>
+                    <th>卡号</th>
+                    <th>订单号</th>
+                    <th>使用权益</th>
+                </tr>
+                @{
+                    if (null != customerCards && customerCards.Any())
+                    {
+                        foreach (var customerCard in customerCards)
+                        {
+                            var card = customerCard.CardBase;
+                            if (null != card)
+                            {
+                                var productCategoryName = "";
+                                var count = 0;
+                                if (null != card.CardEquities && card.CardEquities.Any())
+                                {
+                                    foreach (var cardEquity in card.CardEquities)
+                                    {
+                                        count += cardEquity.EquityUsedCount;
+                                        productCategoryName += cardEquity.ProductCategoryName + cardEquity.EquityUsedCount + "次" + ",";
+                                    }
+                                    productCategoryName = !string.IsNullOrEmpty(productCategoryName) && productCategoryName.EndsWith(",") ? productCategoryName.TrimEnd(',') : productCategoryName;
+                                }
+
+                                if (count == 0)
+                                {
+                                    continue;
+                                }
+
+                                var orderCards = OrderCard.FindByList(cardId: card.Id);
+                                if (null != orderCards && orderCards.Any())
+                                {
+                                    foreach (var orderCard in orderCards)
+                                    {
+                                        var orderBase = OrderBaseInfo.FindById(orderCard.OrderId);
+
+                                        <tr>
+                                            <td>@(card.CardCode)</td>
+                                            <td>@(null != orderBase ? orderBase.OrderNo : string.Empty)</td>
+                                            <td>@(orderCard.ConsumerInterest)</td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                @*<tr>
+                    <td>102322</td>
+                    <td>102322</td>
+                    <td>短线2次，长线1次</td>
+                </tr>*@
+            </table>
+        </div>
+    </div>
+</div>

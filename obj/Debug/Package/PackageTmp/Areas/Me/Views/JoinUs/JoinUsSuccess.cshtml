@@ -1,0 +1,25 @@
+﻿@using Drp.Model.Sys
+
+@{
+    ViewBag.Title = "注册成功";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="box">
+    <div class="successBox">
+        <img src="/images/success.png" alt="">
+        <p>恭喜您，提交成功请等待审核。</p>
+        <div class="submit active" onclick="ContinueImprove()">继续完善资料</div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+	function ContinueImprove() {
+	    window.location.href = "/Me/MyCenter/PersonalInformation?customerId=@ViewData["CustomerId"]";
+	}
+
+	$(function(){
+		
+	})
+</script>

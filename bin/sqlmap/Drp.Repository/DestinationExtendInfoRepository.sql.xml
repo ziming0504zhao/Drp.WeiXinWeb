@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root xmlns="http://m2sa.net/Schema/SqlMapping">
+  <module moduleName="DestinationExtendInfoRepository" dbName="Drp">
+    <sqlWrap  sqlName="Insert"  supportDBType="MySql,SqlServer">
+      INSERT INTO YL_Dictionary_ExtendInfo
+      ([DictionaryId]
+      ,[ExtendTypeId]
+      ,[ExtendContent]
+      ,[IsValid]
+      ,[CreateUserName]
+      ,[CreateDate]
+      ,[CreateLoginId])
+      VALUES
+      (@DictionaryId
+      ,@ExtendTypeId
+      ,@ExtendContent
+      ,1
+      ,@UserName
+      ,GETDATE()
+      ,@LoginId)
+      SELECT @@IDENTITY
+    </sqlWrap>
+    
+    <sqlWrap  sqlName="Update"  supportDBType="MySql,SqlServer">
+      UPDATE YL_Dictionary_ExtendInfo
+      SET [DictionaryId] = @DictionaryId
+      ,[ExtendTypeId] = @ExtendTypeId
+      ,[ExtendContent] = @ExtendContent
+      ,[UpdateDate] = GETDATE()
+      ,[UpdateLoginId] = @LoginId
+      WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SelectById" supportDBType="MySql,SqlServer">
+      SELECT * FROM  [YL_Dictionary_ExtendInfo] WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="FindByList" supportDBType="MySql,SqlServer">
+      SELECT * FROM YL_Dictionary_ExtendInfo WHERE 1=1
+      #if(@DictionaryId){ AND DictionaryId =@DictionaryId}
+      #if(@ExtendTypeId){ AND ExtendTypeId = @ExtendTypeId}
+      #if(@IsValid){ AND IsValid=@IsValid}
+      ORDER BY Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SetValid" supportDBType="MySql,SqlServer">
+      update YL_Dictionary_ExtendInfo set IsValid=@IsValid,UpdateDate=getdate(),UpdateLoginId=@LoginId
+      where Id in (@IdList) and IsValid&lt;&gt;@IsValid;
+    </sqlWrap>
+
+  </module>
+</root>

@@ -1,0 +1,53 @@
+﻿@using Drp.Model
+@using Drp.Model.Product
+
+@{
+    ViewBag.Title = "线路海报";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var productLine = ViewData["ProductLine"] as ProductLine;
+}
+
+<script type="text/javascript" src="/js/html2canvas.min.js"></script>
+
+<div class="box">
+    <!-- 根据此段html生成canvas -->
+    <div class="lineDetail" id="capture">
+        @*<img  src="@(!string.IsNullOrEmpty(productLine.WeChatAdUrl)?(ConstValue.SysConfig.BossImgUrl + productLine.WeChatAdUrl.Split(',')[0]):"")">*@
+        @*<img src="/images/scenery2.png">*@
+        @{
+            if (!string.IsNullOrEmpty(ViewData["ImgUrl1"].ToString()))
+            {
+                <img src="@(ViewData["ImgUrl1"].ToString())">
+            }
+            else
+            {
+                <img src="/images/scenery2.png">
+            }
+        }
+        <span class="ewm"><img src="@(ViewData["ImgUrl"])"></span>
+    </div>
+    <img src="/images/scenery2.png" id="predict_img">
+    <!-- 根据此段html生成canvas -->
+    <div class="tip2">请长按上面图片下载海报</div>
+</div>
+
+<script type="text/javascript">
+	html2canvas(document.querySelector("#capture"),{allowTaint:true}).then(canvas => {
+		
+	    $(".tip2").before(canvas);
+	    try{
+	        var url = canvas.toDataURL();
+	        $(".lineDetail").hide();
+	        $('#predict_img').attr('src', url).css("display", "block");
+	        $("canvas").hide();
+	        //$('#predict_img').attr('src',url);
+	        //$('#predict_img').attr('src', url).show();
+	    }catch(err){
+	    	$('#predict_img').hide();
+	    	console.log('请在服务端运行');
+	        alert("异常：" + err);
+	    }
+
+	});
+</script>

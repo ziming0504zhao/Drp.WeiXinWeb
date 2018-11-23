@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root xmlns="http://m2sa.net/Schema/SqlMapping">
+  <module moduleName="WeixinArticleRepository" dbName="Drp">
+    <sqlWrap  sqlName="Insert"  supportDBType="MySql,SqlServer">
+      INSERT INTO Weixin_Article
+      ([Title]
+      ,[Summary]
+      ,[Contents]
+      ,[ImageUrl]
+      ,[TargetUrl]
+      ,[IsValid]
+      ,[CreateUserName]
+      ,[CreateDate]
+      ,[CreateLoginId])
+      VALUES
+      (@Title
+      ,@Summary
+      ,@Contents
+      ,@ImageUrl
+      ,@TargetUrl
+      ,1
+      ,@UserName
+      ,GETDATE()
+      ,@LoginId)
+    </sqlWrap>
+
+    <sqlWrap  sqlName="Update"  supportDBType="MySql,SqlServer">
+      UPDATE Weixin_Article
+      SET [Title] = @Title
+      ,[Summary] = @Summary
+      ,[Contents] = @Contents
+      ,[ImageUrl] = @ImageUrl
+      ,[TargetUrl] = @TargetUrl
+      ,[UpdateDate] = GETDATE()
+      ,[UpdateLoginId] = @LoginId
+      WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap  sqlName="Delete"  supportDBType="MySql,SqlServer">
+      DELETE FROM Weixin_Article WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap  sqlName="SelectById"  supportDBType="MySql,SqlServer">
+      SELECT * FROM Weixin_Article WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap  sqlName="FindByIds"  supportDBType="MySql,SqlServer">
+      SELECT * FROM Weixin_Article WHERE Id IN (@Ids)
+    </sqlWrap>
+
+    <sqlWrap  sqlName="FindByList"  supportDBType="MySql,SqlServer">
+      SELECT * FROM Weixin_Article WHERE 1=1
+      #if(@Title){ AND Title like '%'+@Title+'%'}
+      #if(@IsValid){ AND IsValid=@IsValid}
+      ORDER BY Id
+    </sqlWrap>
+
+    <sqlWrap  sqlName="FindByKeyWordId"  supportDBType="MySql,SqlServer">
+      SELECT Weixin_Article.* FROM Weixin_Article INNER JOIN Weixin_Reply ON Weixin_Article.Id=Weixin_Reply.ArticleId
+      WHERE Weixin_Reply.KeywordId=@KeywordId AND Weixin_Reply.IsValid=1 ORDER BY Weixin_Reply.SortOrder ASC
+    </sqlWrap>
+    
+    <sqlWrap sqlName="SetValid" supportDBType="MySql,SqlServer">
+      update Weixin_Article set IsValid=@IsValid,UpdateDate=getdate(),UpdateLoginId=@LoginId
+      where Id in (@IdList) and IsValid&lt;&gt;@IsValid;
+    </sqlWrap>
+
+  </module>
+</root>

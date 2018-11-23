@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root xmlns="http://m2sa.net/Schema/SqlMapping">
+  <module moduleName="PageRepository" dbName="Drp">
+    <sqlWrap  sqlName="Insert"  supportDBType="MySql,SqlServer">
+      INSERT INTO Sys_Page
+      ([Name]
+      ,[AreaName]
+      ,[ControllerName]
+      ,[ActionName]
+      ,[RouteData]
+      ,[Desc]
+      ,[IsValid]
+      ,[CreateUserName]
+      ,[CreateDate]
+      ,[CreateLoginId])
+      VALUES
+      (@Name
+      ,@AreaName
+      ,@ControllerName
+      ,@ActionName
+      ,@RouteData
+      ,@Desc
+      ,1
+      ,@UserName
+      ,GETDATE()
+      ,@LoginId)
+      SELECT @@IDENTITY
+    </sqlWrap>
+    
+    <sqlWrap  sqlName="Update"  supportDBType="MySql,SqlServer">
+      UPDATE Sys_Page
+      SET [Name] = @Name
+      ,[AreaName] = @AreaName
+      ,[ControllerName] = @ControllerName
+      ,[ActionName] = @ActionName
+      ,[RouteData] = @RouteData
+      ,[Desc] = @Desc
+      ,[UpdateDate] = GETDATE()
+      ,[UpdateLoginId] = @LoginId
+      WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SelectById" supportDBType="MySql,SqlServer">
+      SELECT * FROM  [Sys_Page] WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="FindByList" supportDBType="MySql,SqlServer">
+      SELECT * FROM Sys_Page WHERE 1=1
+      #if(@Name){ AND Name like '%'+@Name+'%'}
+      #if(@AreaName){ AND AreaName=@AreaName}
+      #if(@ControllerName){ AND ControllerName=@ControllerName}
+      #if(@ActionName){ AND ActionName=@ActionName}
+      #if(@IsValid){ AND IsValid=@IsValid}
+      ORDER BY Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SetValid" supportDBType="MySql,SqlServer">
+      update Sys_Page set IsValid=@IsValid,UpdateDate=getdate(),UpdateLoginId=@LoginId
+      where Id in (@IdList) and IsValid&lt;&gt;@IsValid;
+    </sqlWrap>
+
+  </module>
+</root>

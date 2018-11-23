@@ -1,0 +1,953 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>M2SA.AppGenome.Logging</name>
+    </assembly>
+    <members>
+        <member name="T:M2SA.AppGenome.Logging.FilePattern">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.FilePattern.PathPattern">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.FilePattern.TryTimes">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.FilePattern.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.FilePattern.GetFileName(M2SA.AppGenome.Logging.ILogEntry)">
+            <summary>
+            
+            </summary>
+            <param name="entry"></param>
+            <returns></returns>
+        </member>
+        <member name="T:M2SA.AppGenome.Logging.Formatters.FormatterBase">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Formatters.FormatterBase.Format(M2SA.AppGenome.Logging.ILogEntry)">
+            <summary>
+            
+            </summary>
+            <param name="entry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Formatters.FormatterBase.FormatEntry(M2SA.AppGenome.Logging.ILogEntry)">
+            <summary>
+            
+            </summary>
+            <param name="entry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Formatters.FormatterBase.FormatEntry(M2SA.AppGenome.Logging.ISessionEntry)">
+            <summary>
+            
+            </summary>
+            <param name="entry"></param>
+            <returns></returns>
+        </member>
+        <member name="T:M2SA.AppGenome.Logging.Formatters.FormatterUtility">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Formatters.FormatterUtility.ParseTextToKeyList(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="text"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Formatters.FormatterUtility.Format(M2SA.AppGenome.Logging.ILogEntry,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="entry"></param>
+            <param name="text"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Formatters.FormatterUtility.ToMap(M2SA.AppGenome.Logging.ILogEntry,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="entry"></param>
+            <param name="text"></param>
+            <returns></returns>
+        </member>
+        <member name="T:M2SA.AppGenome.Logging.Formatters.ILogEntryFormatter">
+            <summary>
+            Serializes ILogEntry 
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Formatters.ILogEntryFormatter.Format(M2SA.AppGenome.Logging.ILogEntry)">
+            <summary>
+            
+            </summary>
+            <param name="entry"></param>
+            <returns></returns>
+        </member>
+        <member name="T:M2SA.AppGenome.Logging.Formatters.TextFormatter">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.Formatters.TextFormatter.Header">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.Formatters.TextFormatter.Footer">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.Formatters.TextFormatter.Content">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Formatters.TextFormatter.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Formatters.TextFormatter.FormatEntry(M2SA.AppGenome.Logging.ILogEntry)">
+            <summary>
+            
+            </summary>
+            <param name="entry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Formatters.TextFormatter.FormatEntry(M2SA.AppGenome.Logging.ISessionEntry)">
+            <summary>
+            
+            </summary>
+            <param name="entry"></param>
+            <returns></returns>
+        </member>
+        <member name="T:M2SA.AppGenome.Logging.Listeners.QueueListener">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.Listeners.QueueListener.Queue">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Listeners.QueueListener.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Listeners.QueueListener.WriteMessage(M2SA.AppGenome.Logging.ILogEntry)">
+            <summary>
+            
+            </summary>
+            <param name="entry"></param>
+        </member>
+        <member name="T:M2SA.AppGenome.Logging.Listeners.ConsoleListener">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.Listeners.ConsoleListener.Formatter">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Listeners.ConsoleListener.WriteMessage(M2SA.AppGenome.Logging.ILogEntry)">
+            <summary>
+            
+            </summary>
+            <param name="entry"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Listeners.ConsoleListener.Initialize(M2SA.AppGenome.Configuration.IConfigNode)">
+            <summary>
+            
+            </summary>
+            <param name="config"></param>
+        </member>
+        <member name="T:M2SA.AppGenome.Logging.Listeners.FileListener">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.Listeners.FileListener.FilePattern">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.Listeners.FileListener.Formatter">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Listeners.FileListener.WriteMessage(M2SA.AppGenome.Logging.ILogEntry)">
+            <summary>
+            
+            </summary>
+            <param name="entry"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Listeners.FileListener.Initialize(M2SA.AppGenome.Configuration.IConfigNode)">
+            <summary>
+            
+            </summary>
+            <param name="config"></param>
+        </member>
+        <member name="T:M2SA.AppGenome.Logging.Listeners.IListener">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.Listeners.IListener.Name">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.Listeners.IListener.Type">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.Listeners.IListener.SupportAsync">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Listeners.IListener.WriteMessage(M2SA.AppGenome.Logging.ILogEntry)">
+            <summary>
+            
+            </summary>
+            <param name="entry"></param>
+        </member>
+        <member name="T:M2SA.AppGenome.Logging.Listeners.ListenerBase">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.Listeners.ListenerBase.Name">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.Listeners.ListenerBase.Type">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.Listeners.ListenerBase.SupportAsync">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Listeners.ListenerBase.WriteMessage(M2SA.AppGenome.Logging.ILogEntry)">
+            <summary>
+            
+            </summary>
+            <param name="entry"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Listeners.ListenerBase.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:M2SA.AppGenome.Logging.Listeners.ListenerProxy">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.Listeners.ListenerProxy.Name">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.Listeners.ListenerProxy.Enabled">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.Listeners.ListenerProxy.MinLevel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.Listeners.ListenerProxy.MaxLevel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Listeners.ListenerProxy.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:M2SA.AppGenome.Logging.Listeners.ListenerFactory">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.Listeners.ListenerFactory.ModuleKey">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Listeners.ListenerFactory.LoadConfigInfo(System.String)">
+            <summary>
+            加载指定的配置信息
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Listeners.ListenerFactory.GetListener(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="T:M2SA.AppGenome.Logging.ISessionEntry">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.ISessionEntry.EntryList">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.ISessionEntry.CreateTime">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.ISessionEntry.StartTime">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.ISessionEntry.FlushTime">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.ISessionEntry.AppendEntry(M2SA.AppGenome.Logging.ILogEntry)">
+            <summary>
+            
+            </summary>
+            <param name="entry"></param>
+        </member>
+        <member name="T:M2SA.AppGenome.Logging.ISessionLog">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.ISessionLog.SessionId">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.ISessionLog.Flush(System.DateTime)">
+            <summary>
+            
+            </summary>
+            <param name="now"></param>
+        </member>
+        <member name="T:M2SA.AppGenome.Logging.LevelConstraint">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.LevelConstraint.MinLevel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.LevelConstraint.MaxLevel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.LevelConstraint.SysInfoLimit">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.LevelConstraint.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:M2SA.AppGenome.Logging.Logger">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:M2SA.AppGenome.Logging.Logger.SyncObject">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.Logger.Name">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.Logger.EnabledAsync">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.Logger.LevelLimit">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.Logger.ListenerIndexes">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.Logger.Listeners">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.Logger.ProcessInterval">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.Logger.ServerIP">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Logger.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Logger.Debug(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Logger.Debug(System.String,System.Object[])">
+            <summary>
+            
+            </summary>
+            <param name="format"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Logger.Trace(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Logger.Trace(System.String,System.Object[])">
+            <summary>
+            
+            </summary>
+            <param name="format"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Logger.Info(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Logger.Info(System.String,System.Object[])">
+            <summary>
+            
+            </summary>
+            <param name="format"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Logger.Warn(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Logger.Warn(System.String,System.Object[])">
+            <summary>
+            
+            </summary>
+            <param name="format"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Logger.Warn(System.Exception,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="exception"></param>
+            <param name="message"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Logger.Error(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Logger.Error(System.String,System.Object[])">
+            <summary>
+            
+            </summary>
+            <param name="format"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Logger.Error(System.Exception,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="exception"></param>
+            <param name="message"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Logger.Fatal(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Logger.Fatal(System.String,System.Object[])">
+            <summary>
+            
+            </summary>
+            <param name="format"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Logger.Fatal(System.Exception,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="exception"></param>
+            <param name="message"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Logger.WriteMessage(M2SA.AppGenome.Logging.ILogEntry)">
+            <summary>
+            
+            </summary>
+            <param name="entry"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Logger.WriteAsyncMessage(M2SA.AppGenome.Logging.ILogEntry)">
+            <summary>
+            
+            </summary>
+            <param name="entry"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Logger.WriteAsyncMessageByThread(M2SA.AppGenome.Logging.ILogEntry)">
+            <summary>
+            
+            </summary>
+            <param name="entry"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Logger.WriteMessage(M2SA.AppGenome.Logging.LogLevel,System.Object,System.Exception)">
+            <summary>
+            
+            </summary>
+            <param name="level"></param>
+            <param name="msg"></param>
+            <param name="exception"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Logger.WriteCreateEntryException(M2SA.AppGenome.Logging.LogLevel,System.Object,System.Exception,System.Exception)">
+            <summary>
+            
+            </summary>
+            <param name="originalLevel"></param>
+            <param name="originalMessage"></param>
+            <param name="originalException"></param>
+            <param name="createEntryException"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Logger.CreateEntry(M2SA.AppGenome.Logging.LogLevel,System.Object,System.Exception)">
+            <summary>
+            
+            </summary>
+            <param name="level"></param>
+            <param name="message"></param>
+            <param name="exception"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Logger.CreateEntry">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.Logger.Initialize(M2SA.AppGenome.Configuration.IConfigNode)">
+            <summary>
+            
+            </summary>
+            <param name="config"></param>
+        </member>
+        <member name="T:M2SA.AppGenome.Logging.LogFactory">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.LogFactory.Instance">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.LogFactory.ModuleKey">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.LogFactory.ListenerRespository">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.LogFactory.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.LogFactory.GetConfigInfo(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.LogFactory.LoadConfigInfo(System.String)">
+            <summary>
+            加载指定的配置信息
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.LogFactory.ResolveObject(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.LogFactory.GetLogger">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.LogFactory.GetLogger(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="categoryName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.LogFactory.GetSessionLogger(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="sessionId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.LogFactory.GetSessionLogger(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="categoryName"></param>
+            <param name="sessionId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:M2SA.AppGenome.Logging.SessionEntry">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.SessionEntry.EntryList">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.SessionEntry.CreateTime">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.SessionEntry.StartTime">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.SessionEntry.FlushTime">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.SessionEntry.LogLevel">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionEntry.AppendEntry(M2SA.AppGenome.Logging.ILogEntry)">
+            <summary>
+            
+            </summary>
+            <param name="entry"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionEntry.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:M2SA.AppGenome.Logging.SessionLogger">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.SessionLogger.processTime">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.SessionLogger.SessionEntry">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.SessionLogger.SessionId">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.SessionLogger.BufferSize">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLogger.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLogger.WriteAsyncMessage(M2SA.AppGenome.Logging.ILogEntry)">
+            <summary>
+            
+            </summary>
+            <param name="entry"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLogger.WriteAsyncMessageByThread(M2SA.AppGenome.Logging.ILogEntry)">
+            <summary>
+            
+            </summary>
+            <param name="entry"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLogger.CreateEntry">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLogger.Flush(System.DateTime)">
+            <summary>
+            
+            </summary>
+            <param name="now"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLogger.Finalize">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLogger.Dispose">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:M2SA.AppGenome.Logging.SessionLoggerProxy">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.SessionLoggerProxy.Name">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLoggerProxy.#ctor(M2SA.AppGenome.Logging.ILog)">
+            <summary>
+            
+            </summary>
+            <param name="logger"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLoggerProxy.#ctor(M2SA.AppGenome.Logging.ILog,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="logger"></param>
+            <param name="trackResurrection"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLoggerProxy.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            
+            </summary>
+            <param name="info"></param>
+            <param name="context"></param>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.SessionLoggerProxy.TargetLog">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLoggerProxy.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            
+            </summary>
+            <param name="info"></param>
+            <param name="context"></param>
+        </member>
+        <member name="P:M2SA.AppGenome.Logging.SessionLoggerProxy.SessionId">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLoggerProxy.WriteMessage(M2SA.AppGenome.Logging.LogLevel,System.Object,System.Exception)">
+            <summary>
+            
+            </summary>
+            <param name="level"></param>
+            <param name="msg"></param>
+            <param name="exception"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLoggerProxy.Flush(System.DateTime)">
+            <summary>
+            
+            </summary>
+            <param name="now"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLoggerProxy.Debug(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLoggerProxy.Debug(System.String,System.Object[])">
+            <summary>
+            
+            </summary>
+            <param name="format"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLoggerProxy.Trace(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLoggerProxy.Trace(System.String,System.Object[])">
+            <summary>
+            
+            </summary>
+            <param name="format"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLoggerProxy.Info(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLoggerProxy.Info(System.String,System.Object[])">
+            <summary>
+            
+            </summary>
+            <param name="format"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLoggerProxy.Warn(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLoggerProxy.Warn(System.String,System.Object[])">
+            <summary>
+            
+            </summary>
+            <param name="format"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLoggerProxy.Warn(System.Exception,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="exception"></param>
+            <param name="message"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLoggerProxy.Error(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLoggerProxy.Error(System.String,System.Object[])">
+            <summary>
+            
+            </summary>
+            <param name="format"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLoggerProxy.Error(System.Exception,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="exception"></param>
+            <param name="message"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLoggerProxy.Fatal(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLoggerProxy.Fatal(System.String,System.Object[])">
+            <summary>
+            
+            </summary>
+            <param name="format"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLoggerProxy.Fatal(System.Exception,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="exception"></param>
+            <param name="message"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLoggerProxy.Finalize">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLoggerProxy.Dispose">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Logging.SessionLoggerProxy.Initialize(M2SA.AppGenome.Configuration.IConfigNode)">
+            <summary>
+            
+            </summary>
+            <param name="config"></param>
+        </member>
+    </members>
+</doc>

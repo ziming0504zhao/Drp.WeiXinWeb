@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root xmlns="http://m2sa.net/Schema/SqlMapping">
+  <module moduleName="OrderReceiptRepository" dbName="Drp">
+    <sqlWrap  sqlName="Insert"  supportDBType="MySql,SqlServer">
+      INSERT INTO Order_Receipt
+      ([OrderId]
+      ,[OrderNo]
+      ,[Amount]
+      ,[SerialNum]
+      ,[PaymentMethod]
+      ,[PaymentStatus]
+      ,[CreditNote]
+      ,[IsValid]
+      ,[CreateUserName]
+      ,[CreateDate]
+      ,[CreateLoginId])
+      VALUES
+      (@OrderId
+      ,@OrderNo
+      ,@Amount
+      ,@SerialNum
+      ,@PaymentMethod
+      ,@PaymentStatus
+      ,@CreditNote
+      ,1
+      ,@UserName
+      ,GETDATE()
+      ,@LoginId)
+      SELECT @@IDENTITY
+    </sqlWrap>
+    
+    <sqlWrap  sqlName="Update"  supportDBType="MySql,SqlServer">
+      UPDATE Order_Receipt
+      SET [OrderId] = @OrderId
+      ,[OrderNo] = @OrderNo
+      ,[Amount] = @Amount
+      ,[SerialNum] = @SerialNum
+      ,[PaymentMethod] = @PaymentMethod
+      ,[PaymentStatus] = @PaymentStatus
+      ,[CreditNote] = @CreditNote
+      ,[UpdateDate] = GETDATE()
+      ,[UpdateLoginId] = @LoginId
+      WHERE  Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SelectById" supportDBType="MySql,SqlServer">
+      SELECT * FROM  [Order_Receipt] WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="FindByList" supportDBType="MySql,SqlServer">
+      SELECT * FROM Order_Receipt WHERE 1=1
+      #if(@OrderNo){ AND OrderNo like '%'+@OrderNo+'%'}
+      #if(@OrderId){ AND OrderId=@OrderId}
+      #if(@PaymentMethod){ AND PaymentMethod=@PaymentMethod}
+      #if(@PaymentStatus){ AND PaymentStatus=@PaymentStatus}
+      #if(@IsValid){ AND IsValid=@IsValid}
+      ORDER BY Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SetValid" supportDBType="MySql,SqlServer">
+      update Order_Receipt set IsValid=@IsValid,UpdateDate=getdate(),UpdateLoginId=@LoginId
+      where Id in (@IdList) and IsValid&lt;&gt;@IsValid;
+    </sqlWrap>
+
+  </module>
+</root>

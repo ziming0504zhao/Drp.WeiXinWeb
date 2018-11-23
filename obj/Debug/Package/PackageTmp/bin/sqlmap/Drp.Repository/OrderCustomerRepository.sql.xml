@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root xmlns="http://m2sa.net/Schema/SqlMapping">
+  <module moduleName="OrderCustomerRepository" dbName="Drp">
+    <sqlWrap  sqlName="Insert"  supportDBType="MySql,SqlServer">
+      INSERT INTO Order_Customer
+      ([OrderId]
+      ,[GuestName]
+      ,[IdType]
+      ,[IdentityNumber]
+      ,[Mobile]
+      ,[Gender]
+      ,[TicketNo]
+      ,[IsValid]
+      ,[CreateUserName]
+      ,[CreateDate]
+      ,[CreateLoginId])
+      VALUES
+      (@OrderId
+      ,@GuestName
+      ,@IdType
+      ,@IdentityNumber
+      ,@Mobile
+      ,@Gender
+      ,@TicketNo
+      ,1
+      ,@UserName
+      ,GETDATE()
+      ,@LoginId)
+      SELECT @@IDENTITY
+    </sqlWrap>
+    
+    <sqlWrap  sqlName="Update"  supportDBType="MySql,SqlServer">
+      UPDATE Order_Customer
+      SET [OrderId] = @OrderId
+      ,[GuestName] = @GuestName
+      ,[IdType] = @IdType
+      ,[IdentityNumber] = @IdentityNumber
+      ,[Mobile] = @Mobile
+      ,[Gender] = @Gender
+      ,[TicketNo] = @TicketNo
+      ,[UpdateDate] = GETDATE()
+      ,[UpdateLoginId] = @LoginId
+      WHERE  Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SelectById" supportDBType="MySql,SqlServer">
+      SELECT * FROM  [Order_Customer] WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="FindByList" supportDBType="MySql,SqlServer">
+      SELECT * FROM Order_Customer WHERE 1=1
+      #if(@OrderId){ AND OrderId=@OrderId}
+      #if(@IsValid){ AND IsValid=@IsValid}
+      ORDER BY Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SetValid" supportDBType="MySql,SqlServer">
+      update Order_Customer set IsValid=@IsValid,UpdateDate=getdate(),UpdateLoginId=@LoginId
+      where Id in (@IdList) and IsValid&lt;&gt;@IsValid;
+    </sqlWrap>
+
+  </module>
+</root>

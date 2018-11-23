@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root xmlns="http://m2sa.net/Schema/SqlMapping">
+  <module moduleName="ProductLineTravelRepository" dbName="Drp">
+    <sqlWrap  sqlName="Insert"  supportDBType="MySql,SqlServer">
+      INSERT INTO Product_LineTravel
+      ([LineId]
+      ,[TravelDay]
+      ,[Title]
+      ,[Summary]
+      ,[TripImgUrl]
+      ,[IsValid]
+      ,[CreateUserName]
+      ,[CreateDate]
+      ,[CreateLoginId])
+      VALUES
+      (@LineId
+      ,@TravelDay
+      ,@Title
+      ,@Summary
+      ,@TripImgUrl
+      ,1
+      ,@UserName
+      ,GETDATE()
+      ,@LoginId)
+      SELECT @@IDENTITY
+    </sqlWrap>
+    
+    <sqlWrap  sqlName="Update"  supportDBType="MySql,SqlServer">
+      UPDATE Product_LineTravel
+      SET [LineId] = @LineId
+      ,[TravelDay] = @TravelDay
+      ,[Title] = @Title
+      ,[Summary] = @Summary
+      ,[TripImgUrl] = @TripImgUrl
+      ,[UpdateDate] = GETDATE()
+      ,[UpdateLoginId] = @LoginId
+      WHERE  Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SelectById" supportDBType="MySql,SqlServer">
+      SELECT * FROM  [Product_LineTravel] WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="FindByList" supportDBType="MySql,SqlServer">
+      SELECT * FROM Product_LineTravel WHERE 1=1
+      #if(@Title){ AND Title like '%'+@Title+'%'}
+      #if(@LineId){ AND LineId=@LineId}
+      #if(@TravelDay){ AND TravelDay=@TravelDay}
+      #if(@IsValid){ AND IsValid=@IsValid}
+      ORDER BY Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SetValid" supportDBType="MySql,SqlServer">
+      update Product_LineTravel set IsValid=@IsValid,UpdateDate=getdate(),UpdateLoginId=@LoginId
+      where Id in (@IdList) and IsValid&lt;&gt;@IsValid;
+    </sqlWrap>
+
+  </module>
+</root>

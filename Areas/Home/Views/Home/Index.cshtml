@@ -1,0 +1,171 @@
+﻿@using Drp.Model
+@using Drp.Model.Product
+
+@{
+    ViewBag.Title = "首页";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="box">
+    <div class="banner swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide"><img src="/images/banner.png">
+            </div>
+            <div class="swiper-slide"><img src="/images/banner.png">
+            </div>
+            <div class="swiper-slide"><img src="/images/banner.png">
+            </div>
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+    <div class="lineHomeNav clearfix">
+        <ul>
+            <li><a href="/home/Product/lineList"><img src="/images/lineIcon_01.png"><span>签证</span></a></li>
+            <li><a href="/home/Product/lineList"><img src="/images/lineIcon_02.png"><span>考察</span></a></li>
+            <li><a href="/home/Product/lineList"><img src="/images/lineIcon_03.png"><span>游学</span></a></li>
+            <li><a href="/home/Train/Index"><img src="/images/lineIcon_04.png"><span>培训</span></a></li>
+            <li><a href="/home/Product/lineList"><img src="/images/lineIcon_05.png"><span>沙龙</span></a></li>
+            <li><a href="/home/Product/lineList"><img src="/images/lineIcon_06.png"><span>会展</span></a></li>
+            <li><a href="/home/Product/lineList"><img src="/images/lineIcon_07.png"><span>赛事</span></a></li>
+            <li><a href="/home/Product/lineList"><img src="/images/lineIcon_08.png"><span>订制</span></a></li>
+        </ul>
+    </div>
+    <div class="membershipTab lineHomeTab">
+        <ul>
+            @{
+                if (null != ConstValue.Catalog.SuitableTypeDic && ConstValue.Catalog.SuitableTypeDic.Any())
+                {
+                    var isFirst = true;
+                    foreach (var key in ConstValue.Catalog.SuitableTypeDic.Keys)
+                    {
+                        if (isFirst)
+                        {
+                            isFirst = false;
+                            <li class="selected" onclick="tab('lineHomeContent')">@(ConstValue.Catalog.SuitableTypeDic[key])</li>
+                        }
+                        else
+                        {
+                            <li onclick="tab('lineHomeContent')">@(ConstValue.Catalog.SuitableTypeDic[key])</li>
+                        }
+                    }
+                }
+            }
+            @*<li class="selected" onclick="tab('lineHomeContent')">热门推荐</li>
+            <li onclick="tab('lineHomeContent')">当季推荐</li>
+            <li onclick="tab('lineHomeContent')">新品上线</li>*@
+        </ul>
+    </div>
+    @{
+        if (null != ConstValue.Catalog.SuitableTypeDic && ConstValue.Catalog.SuitableTypeDic.Any())
+        {
+            var isFirst = true;
+            foreach (var key in ConstValue.Catalog.SuitableTypeDic.Keys)
+            {
+                var block = isFirst ? "display: block;" : "";
+                <div class="lineHomeContent" style="@block">
+                    @{
+                        var productLines = ProductLine.FindByList(suitableTypeId: key);
+                        if (null != productLines && productLines.Any())
+                        {
+                            var index = 0;
+                            foreach (var productLine in productLines)
+                            {
+                                if (index >= 4)
+                                {
+                                    break;
+                                }
+                                var productLinePrices = ProductLinePrice.FindByList(lineId: productLine.Id);
+                                productLinePrices = productLinePrices.Where(p => DateTime.Parse(p.StartDate) > DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd"))).OrderBy(p => p.SalePrice).ToList();
+                                if (null == productLinePrices || !productLinePrices.Any())
+                                {
+                                    continue;
+                                }
+                                var startDate = productLinePrices.OrderBy(p => p.StartDate).ToList().First().StartDate;
+                                var endDate = productLinePrices.OrderByDescending(p => p.StartDate).ToList().First().StartDate;
+                                var imgUrl = !string.IsNullOrEmpty(productLine.ImgUrl) ? productLine.ImgUrl.Split(',')[0] : productLine.ImgUrl;
+
+                                <div class="lineDetailList collectionList clearfix">
+                                    <img src="@(ConstValue.SysConfig.BossImgUrl + imgUrl)">
+                                    <div class="lineDetailListRight">
+                                        <p><a href="@Url.Action("Index", "Product", new {lineId = productLine.Id})">@(productLine.LineName)</a>
+                                        </p>
+                                        <div class="price">
+                                            <span>￥</span><strong>@(productLinePrices.First().SalePrice)</strong>起
+                                            <div class="date">日期：@(DateTime.Parse(startDate).ToString("MM.dd"))-@(DateTime.Parse(endDate).ToString("MM.dd"))</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                index++;
+                            }
+                        }
+                    }
+
+                </div>
+
+                isFirst = false;
+            }
+        }
+    }
+
+    @*<div class="lineHomeContent" style="display: block;">
+        <div class="lineDetailList collectionList clearfix">
+            <img src="/images/scenery.png">
+            <div class="lineDetailListRight">
+                <p>北京往返昆明大理丽江泸沽湖8日游（纯玩无购物+古雪山+深度环湖游+风情篝火晚会）</p>
+                <div class="price"><span>￥</span><strong>5688</strong>起<div class="date">日期：9.15-10.24</div></div>
+            </div>
+        </div>
+        <div class="lineDetailList collectionList clearfix">
+            <img src="/images/scenery.png">
+            <div class="lineDetailListRight">
+                <p>北京往返昆明大理丽江泸沽湖8日游（纯玩无购物+古雪山+深度环湖游+风情篝火晚会）</p>
+                <div class="price"><span>￥</span><strong>5688</strong>起<div class="date">日期：9.15-10.24</div></div>
+            </div>
+        </div>
+    </div>
+    <div class="lineHomeContent">
+        <div class="lineDetailList collectionList clearfix">
+            <img src="/images/scenery.png">
+            <div class="lineDetailListRight">
+                <p>2北京往返昆明大理丽江泸沽湖8日游（纯玩无购物+古雪山+深度环湖游+风情篝火晚会）</p>
+                <div class="price"><span>￥</span><strong>5688</strong>起<div class="date">日期：9.15-10.24</div></div>
+            </div>
+        </div>
+        <div class="lineDetailList collectionList clearfix">
+            <img src="/images/scenery.png">
+            <div class="lineDetailListRight">
+                <p>2北京往返昆明大理丽江泸沽湖8日游（纯玩无购物+古雪山+深度环湖游+风情篝火晚会）</p>
+                <div class="price"><span>￥</span><strong>5688</strong>起<div class="date">日期：9.15-10.24</div></div>
+            </div>
+        </div>
+    </div>
+    <div class="lineHomeContent">
+        <div class="lineDetailList collectionList clearfix">
+            <img src="/images/scenery.png">
+            <div class="lineDetailListRight">
+                <p>3北京往返昆明大理丽江泸沽湖8日游（纯玩无购物+古雪山+深度环湖游+风情篝火晚会）</p>
+                <div class="price"><span>￥</span><strong>5688</strong>起<div class="date">日期：9.15-10.24</div></div>
+            </div>
+        </div>
+        <div class="lineDetailList collectionList clearfix">
+            <img src="/images/scenery.png">
+            <div class="lineDetailListRight">
+                <p>3北京往返昆明大理丽江泸沽湖8日游（纯玩无购物+古雪山+深度环湖游+风情篝火晚会）</p>
+                <div class="price"><span>￥</span><strong>5688</strong>起<div class="date">日期：9.15-10.24</div></div>
+            </div>
+        </div>
+    </div>*@
+</div>
+
+<script type="text/javascript">
+        $(function() {
+            var mySwiper = new Swiper('.swiper-container', {
+                autoHeight: true, //高度随内容变化
+                autoplay: true, //可选选项，自动滑动
+                pagination: {
+                    el: '.swiper-pagination',
+                },
+            })
+        });
+</script>

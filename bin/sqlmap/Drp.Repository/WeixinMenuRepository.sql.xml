@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root xmlns="http://m2sa.net/Schema/SqlMapping">
+  <module moduleName="WeixinMenuRepository" dbName="Drp">
+    <sqlWrap  sqlName="Insert"  supportDBType="MySql,SqlServer">
+      INSERT INTO Weixin_Menu
+      ([WeixinId]
+      ,[Name]
+      ,[ParentId]
+      ,[MenuTypeId]
+      ,[Keyword]
+      ,[SortOrder]
+      ,[IsValid]
+      ,[CreateUserName]
+      ,[CreateDate]
+      ,[CreateLoginId])
+      VALUES
+      (@WeixinId
+      ,@Name
+      ,@ParentId
+      ,@MenuTypeId
+      ,@Keyword
+      ,@SortOrder
+      ,@IsValid
+      ,@UserName
+      ,GETDATE()
+      ,@LoginId)
+      select @@identity
+    </sqlWrap>
+    
+    <sqlWrap  sqlName="Update"  supportDBType="MySql,SqlServer">
+      UPDATE Weixin_Menu
+      SET [WeixinId] = @WeixinId
+      ,[Name] = @Name
+      ,[ParentId] = @ParentId
+      ,[MenuTypeId] = @MenuTypeId
+      ,[Keyword] = @Keyword
+      ,[SortOrder] = @SortOrder
+      ,[IsValid] = @IsValid
+      ,[UpdateDate] = GETDATE()
+      ,[UpdateLoginId] = @LoginId
+      WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap  sqlName="Delete"  supportDBType="MySql,SqlServer">
+      DELETE FROM Weixin_Menu  WHERE Id=@Id
+    </sqlWrap>
+    
+    <sqlWrap sqlName="SelectById" supportDBType="MySql,SqlServer">
+      SELECT * FROM  [dbo].[Weixin_Menu] WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap  sqlName="FindByWeixinId"  supportDBType="MySql,SqlServer">
+      SELECT * FROM Weixin_Menu  WHERE WeixinId=@WeixinId
+    </sqlWrap>
+
+    <sqlWrap  sqlName="FindByParentIdAndIsValid"  supportDBType="MySql,SqlServer">
+      SELECT * FROM Weixin_Menu  WHERE ParentId=@ParentId AND  IsValid=@IsValid
+    </sqlWrap>
+
+    <sqlWrap  sqlName="FindByParentId"  supportDBType="MySql,SqlServer">
+      SELECT * FROM Weixin_Menu  WHERE ParentId=@ParentId AND  IsValid=1
+    </sqlWrap>
+
+    <sqlWrap  sqlName="FindByList"  supportDBType="MySql,SqlServer">
+      SELECT * FROM Weixin_Menu  WHERE 1=1
+      #if(@WeixinId){ AND WeixinId=@WeixinId}
+      #if(@Name){ AND Name like '%'+@Name+'%'}
+      #if(@ParentId){ AND ParentId=@ParentId}
+      #if(@MenuTypeId){ AND MenuTypeId=@MenuTypeId}
+      #if(@Keyword){ AND Keyword=@Keyword}
+      #if(@IsValid){ AND IsValid=@IsValid}
+      ORDER BY SortOrder ASC
+    </sqlWrap>
+
+    <sqlWrap sqlName="SetValid" supportDBType="MySql,SqlServer">
+      update Weixin_Menu set IsValid=@IsValid,UpdateDate=getdate(),UpdateLoginId=@LoginId
+      where Id in (@IdList) and IsValid&lt;&gt;@IsValid;
+    </sqlWrap>
+
+  </module>
+</root>

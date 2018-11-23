@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root xmlns="http://m2sa.net/Schema/SqlMapping">
+  <module moduleName="DestinationBaseRepository" dbName="Drp">
+    <sqlWrap  sqlName="Insert"  supportDBType="MySql,SqlServer">
+      INSERT INTO Sys_Destination_Base
+      ([DestinationTypeId]
+      ,[ParentId]
+      ,[Name]
+      ,[EnglishName]
+      ,[SpellName]
+      ,[ShortSpell]
+      ,[FigureThree]
+      ,[FigureTwo]
+      ,[RankPath]
+      ,[ImageUrl]
+      ,[LandMark]
+      ,[Labels]
+      ,[SortOrder]
+      ,[TargetId]
+      ,[IsValid]
+      ,[CreateUserName]
+      ,[CreateDate]
+      ,[CreateLoginId])
+      VALUES
+      (@DestinationTypeId
+      ,@ParentId
+      ,@Name
+      ,@EnglishName
+      ,@SpellName
+      ,@ShortSpell
+      ,@FigureThree
+      ,@FigureTwo
+      ,@RankPath
+      ,@ImageUrl
+      ,@LandMark
+      ,@Labels
+      ,@SortOrder
+      ,@TargetId
+      ,1
+      ,@UserName
+      ,GETDATE()
+      ,@LoginId)
+      SELECT @@IDENTITY
+    </sqlWrap>
+    
+    <sqlWrap  sqlName="Update"  supportDBType="MySql,SqlServer">
+      UPDATE Sys_Destination_Base
+      SET [DestinationTypeId] = @DestinationTypeId
+      ,[ParentId] = @ParentId
+      ,[Name] = @Name
+      ,[EnglishName] = @EnglishName
+      ,[SpellName] = @SpellName
+      ,[ShortSpell] = @ShortSpell
+      ,[FigureThree] = @FigureThree
+      ,[FigureTwo] = @FigureTwo
+      ,[RankPath] = @RankPath
+      ,[ImageUrl] = @ImageUrl
+      ,[LandMark] = @LandMark
+      ,[Labels] = @Labels
+      ,[SortOrder] = @SortOrder
+      ,[TargetId] = @TargetId
+      ,[UpdateDate] = GETDATE()
+      ,[UpdateLoginId] = @LoginId
+      WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SelectById" supportDBType="MySql,SqlServer">
+      SELECT * FROM  [Sys_Destination_Base] WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="FindByList" supportDBType="MySql,SqlServer">
+      SELECT * FROM Sys_Destination_Base WHERE 1=1
+      #if(@Name){ and Name like '%'+@Name+'%' }
+      #if(@AncestorId){ and RankRoute like '%-'+@AncestorId+'-%' }
+      #if(@ParentId){ and ParentId=@ParentId }
+      #if(@TypeIdList){ and exists(select 1 from Sys_Destination_Type where DestinationId=Sys_Destination_Base.Id and DestinationTypeId in(@TypeIdList) and IsValid=1) }
+      #if(@IsValid){ and IsValid=@IsValid }
+      ORDER BY Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SetValid" supportDBType="MySql,SqlServer">
+      update Sys_Destination_Base set IsValid=@IsValid,UpdateDate=getdate(),UpdateLoginId=@LoginId
+      where Id in (@IdList) and IsValid&lt;&gt;@IsValid;
+    </sqlWrap>
+
+    <sqlWrap sqlName="GetTypes" supportDBType="MySql,SqlServer">
+      select DestinationTypeId from Sys_Destination_Type where DestinationId=@DestinationId and IsValid=1
+    </sqlWrap>
+
+    <sqlWrap sqlName="UpdateTypes" supportDBType="MySql,SqlServer">
+      update Sys_Destination_Type set IsValid=0,UpdateDate=getdate(),UpdateLoginId=@LoginId where DestinationId=@DestinationId and DestinationTypeId not in(@TypeIdList)
+      insert into Sys_Destination_Type(DestinationId,DestinationTypeId,IsValid,CreateUserName,CreateDate,CreateLoginId)
+      select @DestinationId,Id,1,@UserName,getdate(),@LoginId
+      from Sys_Dictionary_Base where Id in(@TypeIdList)
+      and not exists(select 1 from Sys_Destination_Type where DestinationTypeId=Sys_Dictionary_Base.Id and DestinationId=@DestinationId)
+    </sqlWrap>
+
+    <sqlWrap sqlName="GetExtends" supportDBType="MySql,SqlServer">
+      select * from Sys_Destination_ExtendInfo where DestinationId=@DestinationId and IsValid=1
+    </sqlWrap>
+    
+  </module>
+</root>

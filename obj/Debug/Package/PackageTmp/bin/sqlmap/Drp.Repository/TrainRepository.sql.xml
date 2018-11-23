@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root xmlns="http://m2sa.net/Schema/SqlMapping">
+  <module moduleName="TrainRepository" dbName="Drp">
+    <sqlWrap  sqlName="Insert"  supportDBType="MySql,SqlServer">
+      INSERT INTO Sys_Train
+      ([Title]
+      ,[ContentCategoryId]
+      ,[ContentTypeId]
+      ,[ViewCount]
+      ,[MvUrl]
+      ,[ContentInfo]
+      ,[GobalBuyerId]
+      ,[Desc]
+      ,[IsValid]
+      ,[CreateUserName]
+      ,[CreateDate]
+      ,[CreateLoginId])
+      VALUES
+      (@Title
+      ,@ContentCategoryId
+      ,@ContentTypeId
+      ,@ViewCount
+      ,@MvUrl
+      ,@ContentInfo
+      ,@GobalBuyerId
+      ,@Desc
+      ,1
+      ,@UserName
+      ,GETDATE()
+      ,@LoginId)
+      SELECT @@IDENTITY
+    </sqlWrap>
+    
+    <sqlWrap  sqlName="Update"  supportDBType="MySql,SqlServer">
+      UPDATE Sys_Train
+      SET [Title] = @Title
+      ,[ContentCategoryId] = @ContentCategoryId
+      ,[ContentTypeId] = @ContentTypeId
+      ,[ViewCount] = @ViewCount
+      ,[MvUrl] = @MvUrl
+      ,[ContentInfo] = @ContentInfo
+      ,[GobalBuyerId] = @GobalBuyerId
+      ,[Desc] = @Desc
+      ,[UpdateDate] = GETDATE()
+      ,[UpdateLoginId] = @LoginId
+      WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SelectById" supportDBType="MySql,SqlServer">
+      SELECT * FROM  [Sys_Train] WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="FindByList" supportDBType="MySql,SqlServer">
+      SELECT * FROM Sys_Train WHERE 1=1
+      #if(@Title){ AND Title like '%'+@Title+'%'}
+      #if(@ContentCategoryId){ AND ContentCategoryId=@ContentCategoryId}
+      #if(@ContentTypeId){ AND ContentTypeId=@ContentTypeId}
+      #if(@GobalBuyerId){ AND GobalBuyerId=@GobalBuyerId}
+      #if(@IsValid){ AND IsValid=@IsValid}
+      ORDER BY Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SetValid" supportDBType="MySql,SqlServer">
+      update Sys_Train set IsValid=@IsValid,UpdateDate=getdate(),UpdateLoginId=@LoginId
+      where Id in (@IdList) and IsValid&lt;&gt;@IsValid;
+    </sqlWrap>
+
+  </module>
+</root>

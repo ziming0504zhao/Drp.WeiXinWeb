@@ -1,0 +1,34 @@
+﻿@using Drp.Model
+@using Drp.Model.Customer
+@using Drp.Model.Product
+@using Drp.Model.Sys
+
+@{
+    ViewBag.Title = "培训文章";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var train = ViewData["Train"] as Train;
+}
+
+<div class="box">
+    <div class="trainingListBox">
+        <div class="trainingList">
+            <p>@(train.Title)</p>
+            <div class="trainingListBottom">
+                <strong>@(train.ContentTypeId == 0 ? "文字" : "视频")</strong>
+                <span>@(train.CreateDate.ToString("yyyy-MM-dd"))更新</span>
+                <span>点击量：@(train.ViewCount)</span>
+            </div>
+        </div>
+        <div class="trainingDetail">
+            @(Html.Raw(train.ContentInfo))
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(function() {
+
+    });
+</script>

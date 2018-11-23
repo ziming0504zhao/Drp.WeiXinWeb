@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root xmlns="http://m2sa.net/Schema/SqlMapping">
+  <module moduleName="UploadRepository" dbName="Drp">
+    <sqlWrap sqlName="Insert" supportDBType="MySql,SqlServer">
+      insert into Sys_Upload(Code,Name,Descriptions,FileServer,ServerPath,MaxSize,MaxCount,AllowExtensions,
+      UseOriginalName,NeedThumbnail,ThumbnailMode,ThumbnailHeight,ThumbnailWidth,NeedWatermarkWord,
+      WatermarkWordText,WatermarkWordX,WatermarkWordY,WatermarkWordSize,WatermarkWordColor,
+      WatermarkWordFamily,WatermarkWordAlign,NeedWatermarkImage,WatermarkImagePath,WatermarkImageX,
+      WatermarkImageY,WatermarkImageAlign,RemoveOriginal,IsValid,CreateUserName,CreateDate,CreateLoginId)
+      values(@Code,@Name,@Descriptions,@FileServer,@ServerPath,@MaxSize,@MaxCount,@AllowExtensions,
+      @UseOriginalName,@NeedThumbnail,@ThumbnailMode,@ThumbnailHeight,@ThumbnailWidth,@NeedWatermarkWord,
+      @WatermarkWordText,@WatermarkWordX,@WatermarkWordY,@WatermarkWordSize,@WatermarkWordColor,
+      @WatermarkWordFamily,@WatermarkWordAlign,@NeedWatermarkImage,@WatermarkImagePath,@WatermarkImageX,
+      @WatermarkImageY,@WatermarkImageAlign,@RemoveOriginal,1,@UserName,getdate(),@LoginId)
+      select @@identity
+    </sqlWrap>
+
+    <sqlWrap sqlName="Update" supportDBType="MySql,SqlServer">
+      update Sys_Upload set Code=@Code,Name=@Name,Descriptions=@Descriptions,FileServer=@FileServer,
+      ServerPath=@ServerPath,MaxSize=@MaxSize,MaxCount=@MaxCount,AllowExtensions=@AllowExtensions,
+      UseOriginalName=@UseOriginalName,NeedThumbnail=@NeedThumbnail,ThumbnailMode=@ThumbnailMode,
+      ThumbnailHeight=ThumbnailHeight,ThumbnailWidth=@ThumbnailWidth,NeedWatermarkWord=@NeedWatermarkWord,
+      WatermarkWordText=@WatermarkWordText,WatermarkWordX=@WatermarkWordX,WatermarkWordY=@WatermarkWordY,
+      WatermarkWordSize=@WatermarkWordSize,WatermarkWordColor=@WatermarkWordColor,
+      WatermarkWordFamily=@WatermarkWordFamily,WatermarkWordAlign=@WatermarkWordAlign,
+      NeedWatermarkImage=@NeedWatermarkImage,WatermarkImagePath=@WatermarkImagePath,
+      WatermarkImageX=@WatermarkImageX,WatermarkImageY=@WatermarkImageY,
+      WatermarkImageAlign=@WatermarkImageAlign,RemoveOriginal=@RemoveOriginal,
+      UpdateDate=getdate(),UpdateLoginId=@LoginId where Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SelectById" supportDBType="MySql,SqlServer">
+      select * from Sys_Upload where Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="FindByCode" supportDBType="MySql,SqlServer">
+      select * from Sys_Upload where Code=@Code
+    </sqlWrap>
+
+    <sqlWrap sqlName="FindByList" supportDBType="MySql,SqlServer">
+      select * from Sys_Upload where 1=1
+      #if(@Code){ and Code like '%'+@Code+'%' }
+      #if(@Name){ and Name like '%'+@Name+'%' }
+      #if(@IsValid){ and IsValid=@IsValid }
+      order by Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SetValid" supportDBType="MySql,SqlServer">
+      update Sys_Upload set IsValid=@IsValid,UpdateDate=getdate(),UpdateLoginId=@LoginId
+      where Id in (@IdList) and IsValid&lt;&gt;@IsValid;
+    </sqlWrap>
+    
+  </module>
+</root>

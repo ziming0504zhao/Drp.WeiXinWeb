@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root xmlns="http://m2sa.net/Schema/SqlMapping">
+  <module moduleName="ProductLinePriceRepository" dbName="Drp">
+    <sqlWrap  sqlName="Insert"  supportDBType="MySql,SqlServer">
+      INSERT INTO Product_LinePrice
+      ([LineId]
+      ,[StartDate]
+      ,[BasePrice]
+      ,[SalePrice]
+      ,[ChannelCommission]
+      ,[SaleCommission]
+      ,[SupplierId]
+      ,[SalesStatusId]
+      ,[IsValid]
+      ,[CreateUserName]
+      ,[CreateDate]
+      ,[CreateLoginId])
+      VALUES
+      (@LineId
+      ,@StartDate
+      ,@BasePrice
+      ,@SalePrice
+      ,@ChannelCommission
+      ,@SaleCommission
+      ,@SupplierId
+      ,@SalesStatusId
+      ,1
+      ,@UserName
+      ,GETDATE()
+      ,@LoginId)
+      SELECT @@IDENTITY
+    </sqlWrap>
+    
+    <sqlWrap  sqlName="Update"  supportDBType="MySql,SqlServer">
+      UPDATE Product_LinePrice
+      SET [LineId] = @LineId
+      ,[StartDate] = @StartDate
+      ,[BasePrice] = @BasePrice
+      ,[SalePrice] = @SalePrice
+      ,[ChannelCommission] = @ChannelCommission
+      ,[SaleCommission] = @SaleCommission
+      ,[SupplierId] = @SupplierId
+      ,[SalesStatusId] = @SalesStatusId
+      ,[UpdateDate] = GETDATE()
+      ,[UpdateLoginId] = @LoginId
+      WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SelectById" supportDBType="MySql,SqlServer">
+      SELECT * FROM  [Product_LinePrice] WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="FindByList" supportDBType="MySql,SqlServer">
+      SELECT * FROM Product_LinePrice WHERE 1=1
+      #if(@LineId){ AND LineId=@LineId}
+      #if(@StartDate){ AND StartDate=@StartDate}
+      #if(@SupplierId){ AND SupplierId=@SupplierId}
+      #if(@SalesStatusId){ AND SalesStatusId=@SalesStatusId}
+      #if(@IsValid){ AND IsValid=@IsValid}
+      ORDER BY StartDate ASC
+    </sqlWrap>
+
+    <sqlWrap sqlName="SetValid" supportDBType="MySql,SqlServer">
+      update Product_LinePrice set IsValid=@IsValid,UpdateDate=getdate(),UpdateLoginId=@LoginId
+      where Id in (@IdList) and IsValid&lt;&gt;@IsValid;
+    </sqlWrap>
+
+  </module>
+</root>

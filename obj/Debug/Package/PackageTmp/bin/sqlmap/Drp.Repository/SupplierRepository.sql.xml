@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root xmlns="http://m2sa.net/Schema/SqlMapping">
+  <module moduleName="SupplierRepository" dbName="Drp">
+    <sqlWrap  sqlName="Insert"  supportDBType="MySql,SqlServer">
+      INSERT INTO Sys_Supplier
+      ([FullName]
+      ,[ShortName]
+      ,[CityName]
+      ,[Contact]
+      ,[Mobile]
+      ,[Address]
+      ,[IsValid]
+      ,[CreateUserName]
+      ,[CreateDate]
+      ,[CreateLoginId])
+      VALUES
+      (@FullName
+      ,@ShortName
+      ,@CityName
+      ,@Contact
+      ,@Mobile
+      ,@Address
+      ,1
+      ,@UserName
+      ,GETDATE()
+      ,@LoginId)
+      SELECT @@IDENTITY
+    </sqlWrap>
+    
+    <sqlWrap  sqlName="Update"  supportDBType="MySql,SqlServer">
+      UPDATE Sys_Supplier
+      SET [FullName] = @FullName
+      ,[ShortName] = @ShortName
+      ,[CityName] = @CityName
+      ,[Contact] = @Contact
+      ,[Mobile] = @Mobile
+      ,[Address] = @Address
+      ,[UpdateDate] = GETDATE()
+      ,[UpdateLoginId] = @LoginId
+      WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SelectById" supportDBType="MySql,SqlServer">
+      SELECT * FROM  [Sys_Supplier] WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="FindByList" supportDBType="MySql,SqlServer">
+      SELECT * FROM Sys_Supplier WHERE 1=1
+      #if(@FullName){ AND FullName like '%'+@FullName+'%'}
+      #if(@ShortName){ AND ShortName like '%'+@ShortName+'%'}
+      #if(@CityName){ AND CityName like '%'+@CityName+'%'}
+      #if(@Contact){ AND Contact like '%'+@Contact+'%'}
+      #if(@Mobile){ AND Mobile=@Mobile}
+      #if(@IsValid){ AND IsValid=@IsValid}
+      ORDER BY Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SetValid" supportDBType="MySql,SqlServer">
+      update Sys_Supplier set IsValid=@IsValid,UpdateDate=getdate(),UpdateLoginId=@LoginId
+      where Id in (@IdList) and IsValid&lt;&gt;@IsValid;
+    </sqlWrap>
+
+  </module>
+</root>

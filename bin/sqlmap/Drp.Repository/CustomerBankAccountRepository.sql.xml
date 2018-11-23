@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root xmlns="http://m2sa.net/Schema/SqlMapping">
+  <module moduleName="CustomerBankAccountRepository" dbName="Drp">
+    <sqlWrap  sqlName="Insert"  supportDBType="MySql,SqlServer">
+      INSERT INTO Customer_BankAccount
+      ([CustomerId]
+      ,[AccountTypeId]
+      ,[AccountUserName]
+      ,[BankId]
+      ,[AccountNumber]
+      ,[IsValid]
+      ,[CreateUserName]
+      ,[CreateDate]
+      ,[CreateLoginId])
+      VALUES
+      (@CustomerId
+      ,@AccountTypeId
+      ,@AccountUserName
+      ,@BankId
+      ,@AccountNumber
+      ,1
+      ,@UserName
+      ,GETDATE()
+      ,@LoginId)
+      SELECT @@IDENTITY
+    </sqlWrap>
+    
+    <sqlWrap  sqlName="Update"  supportDBType="MySql,SqlServer">
+      UPDATE Customer_BankAccount
+      SET [CustomerId] = @CustomerId
+      ,[AccountTypeId] = @AccountTypeId
+      ,[AccountUserName] = @AccountUserName
+      ,[BankId] = @BankId
+      ,[AccountNumber] = @AccountNumber
+      ,[UpdateDate] =  GETDATE()
+      ,[UpdateLoginId] =  @LoginId
+      WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SelectById" supportDBType="MySql,SqlServer">
+      SELECT * FROM  [Customer_BankAccount] WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="FindByList" supportDBType="MySql,SqlServer">
+      SELECT * FROM Customer_BankAccount WHERE 1=1
+      #if(@CustomerId){ AND CustomerId=@CustomerId}
+      #if(@AccountUserName){ AND AccountUserName like '%'+@AccountUserName+'%'}
+      #if(@AccountNumber){ AND AccountNumber like '%'+@AccountNumber+'%'}
+      #if(@BankId){ AND BankId=@BankId}
+      #if(@AccountTypeId){ AND AccountTypeId=@AccountTypeId}
+      #if(@Mobile){ AND CustomerId IN (SELECT ID FROM Customer_Base WHERE Mobile like '%'+@Mobile+'%')}
+      #if(@IsValid){ AND IsValid=@IsValid}
+      ORDER BY Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SetValid" supportDBType="MySql,SqlServer">
+      update Customer_BankAccount set IsValid=@IsValid,UpdateDate=getdate(),UpdateLoginId=@LoginId
+      where Id in (@IdList) and IsValid&lt;&gt;@IsValid;
+    </sqlWrap>
+
+  </module>
+</root>

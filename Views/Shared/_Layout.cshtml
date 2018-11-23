@@ -1,0 +1,141 @@
+﻿@using YiYouLun.Weixin.MP.Helpers
+@{
+    var jsSdkUiPackage = Session["JsSdkUiPackage"] as JsSdkUiPackage;
+}
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>@(ViewBag.Title)</title>
+    <link rel="stylesheet" href="/css/main.css?v=1.1">
+    <script type="text/javascript" src="/js/fontsize750.js"></script>
+    <script type="text/javascript" src="/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="/js/main.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/css/swiper.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/js/swiper.min.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            //var mySwiper = new Swiper('.swiper-container', {
+            //    autoHeight: true, //高度随内容变化
+            //    autoplay: true, //可选选项，自动滑动
+            //    pagination: {
+            //        el: '.swiper-pagination',
+            //    },
+            //})
+        });
+    </script>
+</head>
+<body>
+    @RenderBody()
+
+</body>
+</html>
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+    //步骤三：通过config接口注入权限验证配置
+    wx.config({
+        debug: false,
+        appId: '@(jsSdkUiPackage.AppId)',
+        timestamp: @(jsSdkUiPackage.Timestamp),
+        nonceStr: '@(jsSdkUiPackage.NonceStr)',
+        signature: '@(jsSdkUiPackage.Signature)',
+        jsApiList: [
+            'checkJsApi',
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'onMenuShareQQ',
+            'onMenuShareWeibo',
+            'hideMenuItems',
+            'showMenuItems',
+            'hideAllNonBaseMenuItem',
+            'showAllNonBaseMenuItem',
+            'translateVoice',
+            'startRecord',
+            'stopRecord',
+            'onRecordEnd',
+            'playVoice',
+            'pauseVoice',
+            'stopVoice',
+            'uploadVoice',
+            'downloadVoice',
+            'chooseImage',
+            'previewImage',
+            'uploadImage',
+            'downloadImage',
+            'getNetworkType',
+            'openLocation',
+            'getLocation',
+            'hideOptionMenu',
+            'showOptionMenu',
+            'closeWindow',
+            'scanQRCode',
+            'chooseWXPay',
+            'openProductSpecificView',
+            'addCard',
+            'chooseCard',
+            'openCard'
+        ]
+    });
+
+
+    wx.ready(function () {
+        // 1 判断当前版本是否支持指定 JS 接口，支持批量判断
+        wx.checkJsApi({
+            jsApiList: [
+              'getNetworkType',
+              'previewImage'
+            ],
+            success: function (res) {
+                console.info(JSON.stringify(res));
+                //alert(JSON.stringify(res));
+            }
+        });
+
+        // 2. 分享接口
+        // 2.1 监听“分享给朋友”，按钮点击、自定义分享内容及分享结果接口
+        wx.onMenuShareAppMessage({
+            trigger: function (res) {
+                alert('用户点击发送给朋友');
+            },
+            success: function (res) {
+                alert('已分享');
+            },
+            cancel: function (res) {
+                alert('已取消');
+            },
+            fail: function (res) {
+                alert(JSON.stringify(res));
+            }
+        });
+
+
+        wx.onMenuShareTimeline({
+            trigger: function (res) {
+                alert('用户点击分享到朋友圈');
+            },
+            success: function (res) {
+                alert('已分享');
+            },
+            cancel: function (res) {
+                alert('已取消');
+            },
+            fail: function (res) {
+                alert(JSON.stringify(res));
+            }
+        });
+
+        var shareData = {
+            title: '一起看世界官微',
+            desc: '为专属vip客户提供高端旅游休闲度假服务，体验不一样的度假感受。',
+            link: '@(Session["ShareUrl"])',
+            imgUrl: 'http://order.bjseetheworld.com/Content/images/logo.png'
+        };
+        wx.onMenuShareAppMessage(shareData);
+        wx.onMenuShareTimeline(shareData);
+    });
+
+    wx.error(function (res) {
+        console.warn(res.errMsg);
+    });
+</script>

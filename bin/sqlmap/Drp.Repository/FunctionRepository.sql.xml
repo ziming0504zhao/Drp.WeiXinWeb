@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root xmlns="http://m2sa.net/Schema/SqlMapping">
+  <module moduleName="FunctionRepository" dbName="Drp">
+    <sqlWrap  sqlName="Insert"  supportDBType="MySql,SqlServer">
+      INSERT INTO Sys_Function
+      ([ParentId]
+      ,[Name]
+      ,[Desc]
+      ,[SortOrder]
+      ,[IsValid]
+      ,[CreateUserName]
+      ,[CreateDate]
+      ,[CreateLoginId])
+      VALUES
+      (@ParentId
+      ,@Name
+      ,@Desc
+      ,@SortOrder
+      ,1
+      ,@UserName
+      ,GETDATE()
+      ,@LoginId)
+      SELECT @@IDENTITY
+    </sqlWrap>
+    
+    <sqlWrap  sqlName="Update"  supportDBType="MySql,SqlServer">
+      UPDATE Sys_Function
+      SET [ParentId] = @ParentId
+      ,[Name] = @Name
+      ,[Desc] = @Desc
+      ,[SortOrder] = @SortOrder
+      ,[UpdateDate] = GETDATE()
+      ,[UpdateLoginId] = @LoginId
+      WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SelectById" supportDBType="MySql,SqlServer">
+      SELECT * FROM  [Sys_Function] WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="FindByList" supportDBType="MySql,SqlServer">
+      SELECT * FROM Sys_Function WHERE 1=1
+      #if(@ParentId){ AND ParentId=@ParentId}
+      #if(@Name){ AND Name like '%'+@Name+'%'}
+      #if(@IsValid){ AND IsValid=@IsValid}
+      ORDER BY Id
+    </sqlWrap>
+    
+    <sqlWrap sqlName="FindByRoleId" supportDBType="MySql,SqlServer">
+      SELECT * FROM Sys_Function WHERE ID IN (SELECT FunctionId FROM Sys_RoleFunction WHERE RoleId=@RoleId AND IsValid=1) AND IsValid=1
+    </sqlWrap>
+
+    <sqlWrap sqlName="SetValid" supportDBType="MySql,SqlServer">
+      update Sys_Function set IsValid=@IsValid,UpdateDate=getdate(),UpdateLoginId=@LoginId
+      where Id in (@IdList) and IsValid&lt;&gt;@IsValid;
+    </sqlWrap>
+
+    <sqlWrap sqlName="FindByUser" supportDBType="MySql,SqlServer">
+      select DISTINCT c.* from Sys_AccountRole a
+      inner join Sys_RoleFunction b on b.RoleId=a.RoleId and b.IsValid=1
+      inner join Sys_Function c on c.Id=b.FunctionId and c.IsValid=1
+      where a.AccountId=@AccountId and a.IsValid=1 order by SortOrder
+    </sqlWrap>
+
+    <sqlWrap sqlName="GetPages" supportDBType="MySql,SqlServer">
+      SELECT * FROM Sys_FunctionPage WHERE FunctionId=@FunctionId AND IsValid=1
+    </sqlWrap>
+
+    <sqlWrap sqlName="UpdatePage" supportDBType="MySql,SqlServer">
+      DECLARE @pageCount int
+      SELECT @pageCount=COUNT(*)
+      FROM Sys_FunctionPage
+      WHERE FunctionId=@FunctionId
+      AND PageId=@PageId;
+
+      IF @pageCount&gt;0 BEGIN
+      UPDATE Sys_FunctionPage
+      SET IsDefault=@IsDefault,
+      IsValid=1,
+      UpdateDate=getdate(),
+      UpdateLoginId=@LoginId
+      WHERE FunctionId=@FunctionId
+      AND PageId=@PageId END ELSE BEGIN
+      INSERT INTO [Sys_FunctionPage] ([FunctionId] ,[PageId] ,[IsDefault] ,[IsValid] ,[CreateUserName] ,[CreateDate] ,[CreateLoginId])
+      VALUES (@FunctionId ,
+      @PageId ,
+      @IsDefault ,
+      1 ,
+      @UserName ,
+      GETDATE() ,
+      @LoginId) END
+    </sqlWrap>
+
+    <sqlWrap sqlName="RemovePages" supportDBType="MySql,SqlServer">
+      UPDATE Sys_FunctionPage SET IsValid=0,UpdateDate=getdate(),UpdateLoginId=@LoginId WHERE FunctionId=@FunctionId AND PageId IN (@PageIds)
+    </sqlWrap>
+
+  </module>
+</root>

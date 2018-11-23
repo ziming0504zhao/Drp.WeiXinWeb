@@ -1,0 +1,270 @@
+﻿@using Drp.Model
+@using Drp.Model.Customer
+@using Drp.Model.Sys
+
+@{
+    ViewBag.Title = "个人信息";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var customer = ViewData["CustomerBase"] as CustomerBase;
+    var industries = ViewData["Industries"] as IList<DictionaryBase>;
+}
+
+<!-- 选择插件 -->
+<link rel="stylesheet" href="/js/mobiscroll-2.13.2/style/mobiscroll.custom-2.17.0.min.css">
+<script type="text/javascript" src="/js/mobiscroll-2.13.2/script/mobiscroll.custom-2.17.0.min.js"></script>
+<script type="text/javascript">
+    /*
+    三个参数
+    file：一个是文件(类型是图片格式)，
+    w：一个是文件压缩的后宽度，宽度越小，字节越小
+    objDiv：一个是容器或者回调函数
+    photoCompress()
+     */
+    function photoCompress(file,w,objDiv){
+        var ready=new FileReader();
+        /*开始读取指定的Blob对象或File对象中的内容. 当读取操作完成时,readyState属性的值会成为DONE,如果设置了onloadend事件处理程序,则调用之.同时,result属性中将包含一个data: URL格式的字符串以表示所读取文件的内容.*/
+        ready.readAsDataURL(file);
+        ready.onload=function(){
+            var re=this.result;
+            canvasDataURL(re,w,objDiv)
+        }
+    }
+    function canvasDataURL(path, obj, callback){
+        var img = new Image();
+        img.src = path;
+        img.onload = function(){
+            var that = this;
+            // 默认按比例压缩
+            var w = that.width,
+                h = that.height,
+                scale = w / h;
+            w = obj.width || w;
+            h = obj.height || (w / scale);
+            var quality = 0.7;  // 默认图片质量为0.7
+            //生成canvas
+            var canvas = document.createElement('canvas');
+            var ctx = canvas.getContext('2d');
+            // 创建属性节点
+            var anw = document.createAttribute("width");
+            anw.nodeValue = w;
+            var anh = document.createAttribute("height");
+            anh.nodeValue = h;
+            canvas.setAttributeNode(anw);
+            canvas.setAttributeNode(anh);
+            ctx.drawImage(that, 0, 0, w, h);
+            // 图像质量
+            if(obj.quality && obj.quality <= 1 && obj.quality > 0){
+                quality = obj.quality;
+            }
+            // quality值越小，所绘制出的图像越模糊
+            var base64 = canvas.toDataURL('image/jpeg', quality);
+            // 回调函数返回base64的值
+            callback(base64);
+        }
+    }
+
+    $(function(){
+        $(".selectCity").mobiscroll().select({
+            display: 'bottom', //显示方式
+            rows:3,
+            animate: "pop", //弹出特效
+            setText: '确定', //确认按钮名称
+            cancelText: '取消', //取消按钮名籍我
+            headerText: "请选择行业",
+            onClose: function (valueText, inst) {
+                if(inst=='set'){
+                    console.log(valueText);
+                }
+            }
+        });
+        $(".imgUpload").each(function() {
+            $(this).click(function() {
+                $(this).next("input").click();
+            })
+        });
+        
+        $(".uploadInput").change(function() {
+            var _this = this;
+            var fileObj = this.files[0]; // js 获取文件对象
+            if (fileObj.size / 1024 > 1025) { //大于1M，进行压缩上传
+                //alert("if");
+                photoCompress(fileObj, {
+                    quality: 0.2
+                }, function (base64Codes) {
+                    alert("压缩后：" + base64Codes.length / 1024 + " " + base64Codes);
+                    console.log("压缩后：" + base64Codes.length / 1024 + " " + base64Codes);
+                    $(_this).next("img").show().attr("src", base64Codes); //将图片路径存入src中，显示出图片
+                });
+            } else { //小于等于1M 原图上传 无需处理
+                //alert("else");
+                var objUrl = getObjectURL(fileObj);
+                if (objUrl) {
+                    $(_this).next("img").show().attr("src", objUrl); //将图片路径存入src中，显示出图片
+                }
+            }
+
+        });
+        
+        //$(".uploadInput").change(function(){
+        //    var objUrl = getObjectURL(this.files[0]);
+        //    if (objUrl) {
+        //        $(this).next("img").show().attr("src", objUrl) ; //将图片路径存入src中，显示出图片
+        //    }
+        //})
+    })
+</script>
+
+<div class="letter-holder">
+    <div class="l-1 letter">L</div>
+    <div class="l-2 letter">o</div>
+    <div class="l-3 letter">a</div>
+    <div class="l-4 letter">d</div>
+    <div class="l-5 letter">i</div>
+    <div class="l-6 letter">n</div>
+    <div class="l-7 letter">g</div>
+    <div class="l-8 letter">.</div>
+    <div class="l-9 letter">.</div>
+    <div class="l-10 letter">.</div>
+</div>
+
+<div class="box">
+    <form action="@Url.Action("PersonInfoSubmit")" name="personInfoFrm" id="personInfoFrm" enctype='multipart/form-data'>
+        <div class="formBox">
+            <strong class="titleText">个人信息@*<a href="">修改密码</a>*@</strong>
+            <ul>
+                <li><span class="fromText">类&nbsp;&nbsp;型：</span><p class="fromText">@(ConstValue.Catalog.CustomerTypeDic[customer.TypeId])</p></li>
+                <li><span class="fromText">手机号：</span><p class="fromText">@(customer.Mobile)</p></li>
+                <li><span class="fromText">姓&nbsp;&nbsp;名：</span><p class="fromText">@(customer.Name)</p></li>
+                <li><span class="fromText">城&nbsp;&nbsp;市：</span><p class="fromText">@(customer.CityName)</p></li>
+                <li class="selectBox">
+                    <span class="fromText">行&nbsp;&nbsp;业</span>
+                    <select name="selectIndustry" class="selectCity" id="selectIndustry">
+                        @{
+                            if (null != industries && industries.Any())
+                            {
+                                foreach (var industry in industries)
+                                {
+                                    <option value="@industry.Id">@industry.Name</option>
+                                }
+                            }
+                        }
+                        @*<option value="北京">北京</option>
+                        <option value="天津">天津</option>
+                        <option value="上海">上海</option>
+                        <option value="邯郸">邯郸</option>
+                        <option value="成都">成都</option>*@
+                    </select>
+                </li>
+                <li class="imgLi">
+                    <span class="fromText">身份证-正：</span><div class="imgUpload" id="upload1" name="upload1">上传/拍照</div><input class="uploadInput" name="uploadInput1" id="uploadInput1" accept="image/*" type="file">
+                    @{
+                        if (!string.IsNullOrEmpty(customer.IdCardImgUrl1))
+                        {
+                            <img src="@(customer.IdCardImgUrl1)" alt="" style="display:block">
+                        }
+                        else
+                        {
+                            <img src="/images/success.png" alt="">
+                        }
+                    }
+
+                </li>
+                <li class="imgLi">
+                    <span class="fromText">身份证-反：</span><div class="imgUpload" id="upload2" name="upload2">上传/拍照</div><input class="uploadInput" name="uploadInput2" id="uploadInput2" accept="image/*" type="file">
+                    @{
+                        if (!string.IsNullOrEmpty(customer.IdCardImgUrl2))
+                        {
+                            <img src="@(customer.IdCardImgUrl2)" alt="" style="display:block">
+                        }
+                        else
+                        {
+                            <img src="/images/success.png" alt="">
+                        }
+                    }
+                    @*<img src="/images/success.png" alt="">*@
+                </li>
+                <li class="imgLi">
+                    <span class="fromText">免冠照:</span><div class="imgUpload" id="upload3" name="upload3">上传/拍照</div><input class="uploadInput" name="uploadInput3" id="uploadInput3" accept="image/*" type="file">
+                    @{
+                        if (!string.IsNullOrEmpty(customer.MyPhotoUrl))
+                        {
+                            <img src="@(customer.MyPhotoUrl)" alt="" style="display:block">
+                        }
+                        else
+                        {
+                            <img src="/images/success.png" alt="">
+                        }
+                    }
+                    @*<img src="/images/success.png" alt="">*@
+                </li>
+            </ul>
+            <input type="hidden" name="CustomerId" value="@customer.Id"/>
+            <div class="submit active" onclick="PersonInfoSubmit();">提交审核</div>
+        </div>
+    </form>
+</div>
+
+
+<script type="text/javascript">
+    function PersonInfoSubmit() {
+        debugger;
+
+        if ($("#mobile").val() == "") {
+            showTip("手机号不能为空！");
+            return false;
+        } else if ($("#Name").val() == "") {
+            showTip("姓名不能为空！");
+            return false;
+        }
+        else {
+            $("#personInfoFrm").submit();
+        }
+    }
+
+    $(function () {
+
+        //监听表单提交,变为异步提交表单
+        $("#personInfoFrm").on("submit", function (event) {
+            $(".letter-holder").show();
+            var form = this;//this代表的就是当前提交表单的DOM对象
+            //用H5的FormData对象对表单数据进行构造
+            var formData = new FormData(document.getElementById("personInfoFrm"));//FormData构造器接收的是一个form的DOM对象
+            debugger;
+            $.ajax({
+                url: this.action,
+                type: "POST",
+                data: formData,
+                dataType: "JSON",
+                async: true,
+                timeout: 60000, //超时时间：60秒
+                //要想用jquery的ajax来提交FormData数据,
+                //则必须要把这两项设为false
+                processData: false,
+                contentType: false,
+                //这里是防表单重复提交,可以忽略
+                beforeSend: function (xhr) {
+                    $("#personInfoFrm :submit").attr("disabled", true);
+                },
+                complete: function (xhr, status) {
+                    $(".letter-holder").hide();
+                    $("#personInfoFrm :submit").attr("disabled", false);
+                },
+                error: function (xhr, status, error) {
+                    showTip("请求出错!");
+                },
+                success: function (result) {
+                    $(".letter-holder").hide();
+                    debugger;
+                    if (result.IsSuccess == true) {
+                        window.location.href = "/Me/MyCenter/WithDrawalSuccess";
+                    } else {
+                        showTip(result.Message);
+                    }
+                }
+            });
+
+            //阻止表单的提交事件
+            return false;
+        });
+    });
+</script>

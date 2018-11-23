@@ -1,0 +1,69 @@
+﻿@using Drp.Model
+@using Drp.Model.Customer
+@using Drp.Model.Product
+@using Drp.Model.Sys
+
+@{
+    ViewBag.Title = "培训";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var customerBase = ViewData["CustomerBase"] as CustomerBase;
+    var trains = ViewData["Trains"] as IList<Train>;
+}
+
+<div class="box">
+    <div class="trainingListBox">
+        @{
+            if (null != trains && trains.Any())
+            {
+                foreach (var train in trains)
+                {
+                    if (string.IsNullOrEmpty(train.GobalBuyerId) || (null != customerBase && customerBase.TypeId == int.Parse(train.GobalBuyerId)))
+                    {
+                        var contentType = train.ContentTypeId == 0 ? "文字" : "视频";
+
+
+                        <div class="trainingList">
+                            <a href="@(train.ContentTypeId == 0 ? "/Home/Train/TrainText/" + train.Id : "/Home/Train/TrainVideo/" + train.Id)">
+                                <p>@(train.Title)</p>
+                                <div class="trainingListBottom">
+                                    <strong>@(contentType)</strong>
+                                    <span>@(train.CreateDate.ToString("yyyy-MM-dd"))更新</span>
+                                    <span>点击量：@(train.ViewCount)</span>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                }
+            }
+        }
+        
+        @*<div class="trainingList">
+            <a href="">
+                <p>北京邮轮销售经验宝典，让你做一个销售达人个销售达人北京邮轮销售经验宝典，让你做一个销售达人个销售达人</p>
+                <div class="trainingListBottom">
+                    <strong>文字</strong>
+                    <span>2018-12-10更新</span>
+                    <span>点击量：12932</span>
+                </div>
+            </a>
+        </div>
+        <div class="trainingList">
+            <a href="">
+                <p>北京邮轮销售经验宝典，让你做一个销售达人个销售达人北京邮轮销售经验宝典，让你做一个销售达人个销售达人</p>
+                <div class="trainingListBottom">
+                    <strong>文字</strong>
+                    <span>2018-12-10更新</span>
+                    <span>点击量：12932</span>
+                </div>
+            </a>
+        </div>*@
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(function() {
+
+    });
+</script>

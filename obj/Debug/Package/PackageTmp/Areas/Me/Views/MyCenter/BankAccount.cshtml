@@ -1,0 +1,127 @@
+﻿@using Drp.Model.Customer
+@using Drp.Model.Sys
+
+@{
+    ViewBag.Title = "银行账号";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var customerBankAccounts = ViewData["CustomerBankAccounts"] as IList<CustomerBankAccount>;
+    var customerBankAccount = null != customerBankAccounts && customerBankAccounts.Any() ? customerBankAccounts.First() : null;
+    var accountTypes = ViewData["AccountTypes"] as IList<DictionaryBase>;
+    var banks = ViewData["Banks"] as IList<DictionaryBase>;
+}
+
+<!-- 选择插件 -->
+<link rel="stylesheet" href="/js/mobiscroll-2.13.2/style/mobiscroll.custom-2.17.0.min.css">
+<script type="text/javascript" src="/js/mobiscroll-2.13.2/script/mobiscroll.custom-2.17.0.min.js"></script>
+<!-- 选择插件结束 -->
+<script type="text/javascript">
+    $(function() {
+        $(".selectType").mobiscroll().select({
+            display: 'bottom', //显示方式
+            rows: 3,
+            animate: "pop", //弹出特效
+            setText: '确定', //确认按钮名称
+            cancelText: '取消', //取消按钮名籍我
+            headerText: "请选择类型",
+            onClose: function(valueText, inst) {
+                if (inst == 'set') {
+                    console.log(valueText);
+                }
+            }
+        });
+        $(".selectBank").mobiscroll().select({
+            display: 'bottom', //显示方式
+            rows: 3,
+            animate: "pop", //弹出特效
+            setText: '确定', //确认按钮名称
+            cancelText: '取消', //取消按钮名籍我
+            headerText: "请选择银行",
+            onClose: function(valueText, inst) {
+                if (inst == 'set') {
+                    console.log(valueText);
+                }
+            }
+        });
+    })
+</script>
+
+
+<div class="box">
+    <div class="formBox">
+        <strong class="titleText">维护银行账号</strong>
+        <ul>
+            <li class="selectBox">
+                <span class="fromText">类&nbsp;&nbsp;型：</span>
+                <select class="selectType" id="AccountTypeId" name="AccountTypeId">
+                    @{
+                        if (null != accountTypes && accountTypes.Any())
+                        {
+                            foreach (var accountType in accountTypes)
+                            {
+                                <option value="@accountType.Id" @(null != customerBankAccount && customerBankAccount.AccountTypeId == accountType.Id ? "selected=\"selected\"" : "")>@accountType.Name</option>
+                            }
+                        }
+                    }
+                    @*<option value="北京">北京</option>
+                    <option value="天津">天津</option>
+                    <option value="上海">上海</option>
+                    <option value="邯郸">邯郸</option>
+                    <option value="成都">成都</option>*@
+                </select>
+            </li>
+            <li><span class="fromText">户&nbsp;&nbsp;名：</span><input type="text" id="AccountUserName" placeholder="请输入户名" name="AccountUserName" value="@(null != customerBankAccount ? customerBankAccount.AccountUserName : string.Empty)"></li>
+            <li class="selectBox">
+                <span class="fromText">银&nbsp;&nbsp;行：</span>
+                <select class="selectBank" id="BankId" name="BankId">
+                    <option value="0"></option>
+                    @{
+                        if (null != banks)
+                        {
+                            foreach (var bank in banks)
+                            {
+                                <option value="@bank.Id" @(null != customerBankAccount && customerBankAccount.BankId == bank.Id ? "selected=\"selected\"" : "")>@bank.Name</option>
+                            }
+                        }
+                    }
+                    @*<option value="北京">北京</option>
+                    <option value="天津">天津</option>
+                    <option value="上海">上海</option>
+                    <option value="邯郸">邯郸</option>
+                    <option value="成都">成都</option>*@
+                </select>
+            </li>
+            <li><span class="fromText">账号：</span><input type="text" id="AccountNumber" name="AccountNumber" placeholder="请输入账号" value="@(null != customerBankAccount ? customerBankAccount.AccountNumber : string.Empty)"></li>
+        </ul>
+        <div class="submit active" onclick="BankAccountJs.BankAccountSubmit();">保存</div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    var BankAccountJs = {
+        BankAccountSubmit:function() {
+            $.ajax({
+                type: "post",
+                url: '/Me/MyCenter/BankAccountSubmit',
+                async: false, // 使用同步方式
+                // 1 需要使用JSON.stringify 否则格式为 a=2&b=3&now=14...
+                // 2 需要强制类型转换，否则格式为 {"a":"2","b":"3"}
+                data: JSON.stringify({ accountTypeId: $("#AccountTypeId").val(), accountUserName: $("#AccountUserName").val(), bankId: $("#BankId").val(), accountNumber: $("#AccountNumber").val() }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    debugger;
+                    if (result.IsSuccess == true) {
+                        window.location.href = "/Me/MyCenter/Index";
+                    } else {
+                        showTip(result.Message);
+                    }
+                }
+            });
+        }
+    };
+
+    $(function() {
+
+    });
+</script>

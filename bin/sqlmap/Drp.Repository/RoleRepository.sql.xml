@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root xmlns="http://m2sa.net/Schema/SqlMapping">
+  <module moduleName="RoleRepository" dbName="Drp">
+    <sqlWrap  sqlName="Insert"  supportDBType="MySql,SqlServer">
+      INSERT INTO Sys_Role
+      ([ParentId]
+      ,[Name]
+      ,[Desc]
+      ,[SortOrder]
+      ,[IsValid]
+      ,[CreateUserName]
+      ,[CreateDate]
+      ,[CreateLoginId])
+      VALUES
+      (@ParentId
+      ,@Name
+      ,@Desc
+      ,@SortOrder
+      ,@IsValid
+      ,@UserName
+      ,GETDATE()
+      ,@LoginId)
+      SELECT @@IDENTITY
+    </sqlWrap>
+    
+    <sqlWrap  sqlName="Update"  supportDBType="MySql,SqlServer">
+      UPDATE Sys_Role
+      SET [ParentId] = @ParentId
+      ,[Name] = @Name
+      ,[Desc] = @Desc
+      ,[SortOrder] = @SortOrder
+      ,[UpdateDate] = GETDATE()
+      ,[UpdateLoginId] = @LoginId
+      WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SelectById" supportDBType="MySql,SqlServer">
+      SELECT * FROM  [Sys_Role] WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="FindByList" supportDBType="MySql,SqlServer">
+      SELECT * FROM Sys_Role WHERE 1=1
+      #if(@ParentId){ AND ParentId=@ParentId}
+      #if(@Name){ AND Name like '%'+@Name+'%'}
+      #if(@IsValid){ AND IsValid=@IsValid}
+      ORDER BY Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="FindRolesByAccountId" supportDBType="MySql,SqlServer">
+      SELECT * FROM Sys_Role WHERE ID IN (SELECT RoleId FROM Sys_AccountRole WHERE AccountId=@AccountId AND IsValid=1) AND IsValid=1;
+    </sqlWrap>
+
+    <sqlWrap sqlName="SetValid" supportDBType="MySql,SqlServer">
+      update Sys_Role set IsValid=@IsValid,UpdateDate=getdate(),UpdateLoginId=@LoginId
+      where Id in (@IdList) and IsValid&lt;&gt;@IsValid;
+    </sqlWrap>
+
+    <sqlWrap  sqlName="BatchRoleFunction"  supportDBType="3">
+      EXEC('
+      UPDATE Sys_RoleFunction SET IsValid=0,UpdateDate=GETDATE(),UpdateLoginId='+@LoginId +' WHERE RoleId='+ @RoleId +';
+      UPDATE Sys_RoleFunction SET IsValid=1 WHERE RoleId='+ @RoleId +' AND FunctionId IN ('+ @RunctionIds +');
+      INSERT INTO Sys_RoleFunction(RoleId,FunctionId,IsValid,CreateUserName,CreateDate,CreateLoginId)
+      SELECT '+ @RoleId +',Id,1,'''+ @UserName +''',GETDATE(),'+ @LoginId +' FROM Sys_Function WHERE Id IN ('+ @RunctionIds +') AND IsValid=1
+      AND Id NOT IN (SELECT FunctionId FROM Sys_RoleFunction WHERE RoleId='+ @RoleId +')
+      ')
+    </sqlWrap>
+
+  </module>
+</root>

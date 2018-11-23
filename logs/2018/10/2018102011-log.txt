@@ -1,0 +1,68 @@
+﻿	LogEntry:M2SA.AppGenome.Logging.LogEntry
+		AppName:Drp.WeiXinWeb
+		LogName:default
+		SessionId:[Null]
+		ServerIP:fe80::f8ed:f733:474b:500%5,fe80::555:6b24:db1b:7762%14,fe80::50ba:4936:dcb4:48b9%23,fe80::ed:c7a:3f57:d426%18,192.168.52.1,192.168.32.1,192.168.43.217,2001:0:9d38:6ab8:ed:c7a:3f57:d426
+		BizType:[Null]
+		BizId:[Null]
+		BizOperator:[Null]
+		BizLabs:GET:/home/home/index
+		LogLevel:Info
+		Message:customerId:0
+		URI:GET:/home/home/index
+		LogTime:2018-10-20 11:05:10.387
+		WriteTime:2018-10-20 11:05:11.222
+		Exception:[Null]
+		ExtendInfo:Map[0]
+		SysInfo:[Null]
+	LogEntry:M2SA.AppGenome.Logging.LogEntry
+		AppName:Drp.WeiXinWeb
+		LogName:default
+		SessionId:[Null]
+		ServerIP:fe80::f8ed:f733:474b:500%5,fe80::555:6b24:db1b:7762%14,fe80::50ba:4936:dcb4:48b9%23,fe80::ed:c7a:3f57:d426%18,192.168.52.1,192.168.32.1,192.168.43.217,2001:0:9d38:6ab8:ed:c7a:3f57:d426
+		BizType:[Null]
+		BizId:[Null]
+		BizOperator:[Null]
+		BizLabs:GET:/home/home/index
+		LogLevel:Error
+		Message:url:http://localhost:7788/home/home/index
+		URI:GET:/home/home/index
+		LogTime:2018-10-20 11:05:10.406
+		WriteTime:2018-10-20 11:05:11.260
+		Exception:[Null]
+		ExtendInfo:Map[0]
+		SysInfo:[Null]
+	LogEntry:M2SA.AppGenome.Logging.LogEntry
+		AppName:Drp.WeiXinWeb
+		LogName:default
+		SessionId:[Null]
+		ServerIP:fe80::f8ed:f733:474b:500%5,fe80::555:6b24:db1b:7762%14,fe80::50ba:4936:dcb4:48b9%23,fe80::ed:c7a:3f57:d426%18,192.168.52.1,192.168.32.1,192.168.43.217,2001:0:9d38:6ab8:ed:c7a:3f57:d426
+		BizType:[Null]
+		BizId:[Null]
+		BizOperator:[Null]
+		BizLabs:GET:/home/home/index
+		LogLevel:Info
+		Message:customerId:0
+		URI:GET:/home/home/index
+		LogTime:2018-10-20 11:08:13.148
+		WriteTime:2018-10-20 11:08:14.140
+		Exception:[Null]
+		ExtendInfo:Map[0]
+		SysInfo:[Null]
+	LogEntry:M2SA.AppGenome.Logging.LogEntry
+		AppName:Drp.WeiXinWeb
+		LogName:default
+		SessionId:[Null]
+		ServerIP:fe80::f8ed:f733:474b:500%5,fe80::555:6b24:db1b:7762%14,fe80::50ba:4936:dcb4:48b9%23,fe80::ed:c7a:3f57:d426%18,192.168.52.1,192.168.32.1,192.168.43.217,2001:0:9d38:6ab8:ed:c7a:3f57:d426
+		BizType:[Null]
+		BizId:[Null]
+		BizOperator:[Null]
+		BizLabs:GET:/home/home/index
+		LogLevel:Error
+		Message:url:http://localhost:7788/home/home/index
+		URI:GET:/home/home/index
+		LogTime:2018-10-20 11:08:13.148
+		WriteTime:2018-10-20 11:08:14.143
+		Exception:[Null]
+		ExtendInfo:Map[0]
+		SysInfo:[Null]

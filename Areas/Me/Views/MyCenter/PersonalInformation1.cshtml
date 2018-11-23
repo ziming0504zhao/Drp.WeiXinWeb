@@ -1,0 +1,60 @@
+﻿@using Drp.Model
+@using Drp.Model.Customer
+@using Drp.Model.Sys
+
+@{
+    ViewBag.Title = "个人信息";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var customer = ViewData["CustomerBase"] as CustomerBase;
+}
+
+<div class="box">
+    <div class="formBox">
+        <strong class="titleText">个人信息@*<a href="">修改密码</a>*@</strong>
+        <ul>
+            <li><span class="fromText">类&nbsp;&nbsp;型：</span><p class="fromText">@(ConstValue.Catalog.CustomerTypeDic[customer.TypeId])</p></li>
+            <li><span class="fromText">手机号：</span><p class="fromText">@(customer.Mobile)</p></li>
+            <li><span class="fromText">姓&nbsp;&nbsp;名：</span><p class="fromText">@(customer.Name)</p></li>
+            <li><span class="fromText">城&nbsp;&nbsp;市：</span><p class="fromText">@(customer.CityName)</p></li>
+            <li class="selectBox"><span class="fromText">行&nbsp;&nbsp;业</span><p class="fromText">@(null != customer.Industry ? customer.Industry.Name : string.Empty)</p></li>
+            <li class="imgLi clearfix">
+                <span class="fromText">身份证：</span>
+                <div class="imgBox">
+                    @{
+                        if (!string.IsNullOrEmpty(customer.IdCardImgUrl1))
+                        {
+                            <img src="@customer.IdCardImgUrl1" alt="">
+                        }
+                        if (!string.IsNullOrEmpty(customer.IdCardImgUrl2))
+                        {
+                            <img src="@customer.IdCardImgUrl2" alt="">
+                        }
+                    }
+                    @*<img src="/images/success.png" alt="">
+                    <img src="/images/success.png" alt="">*@
+                </div>
+            </li>
+            <li class="imgLi clearfix">
+                <span class="fromText">免冠照:</span>
+                <div class="imgBox">
+                    @if (!string.IsNullOrEmpty(customer.MyPhotoUrl))
+                    {
+                        <img src="@customer.MyPhotoUrl" alt="">
+                    }
+                    @*<img src="/images/success.png" alt="">*@</div>
+            </li>
+        </ul>
+        <div class="submit active" onclick="ToMyCenter();">返回个人中心</div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+	function ToMyCenter() {
+	    window.location.href = "/me/mycenter/index";
+	}
+
+	$(function(){
+
+	})
+</script>

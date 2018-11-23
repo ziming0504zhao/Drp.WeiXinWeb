@@ -1,0 +1,17 @@
+﻿	LogEntry:M2SA.AppGenome.Logging.LogEntry
+		AppName:Drp.WeiXinWeb
+		LogName:default
+		SessionId:[Null]
+		ServerIP:fe80::f8ed:f733:474b:500%5,fe80::555:6b24:db1b:7762%13,fe80::50ba:4936:dcb4:48b9%22,fe80::cf1:36ee:9aae:117f%17,192.168.52.1,192.168.32.1,192.168.5.147,2001:0:9d38:6ab8:cf1:36ee:9aae:117f
+		BizType:[Null]
+		BizId:[Null]
+		BizOperator:[Null]
+		BizLabs:GET:/
+		LogLevel:Error
+		Message:url:http://localhost:7039/
+		URI:GET:/
+		LogTime:2018-10-17 23:18:14.271
+		WriteTime:2018-10-17 23:18:15.376
+		Exception:[Null]
+		ExtendInfo:Map[0]
+		SysInfo:[Null]

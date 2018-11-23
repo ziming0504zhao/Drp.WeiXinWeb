@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root xmlns="http://m2sa.net/Schema/SqlMapping">
+  <module moduleName="LoginRepository" dbName="Drp">
+    <sqlWrap sqlName="Login" supportDBType="MySql,SqlServer">
+      SELECT  *,Id as LoginId FROM Sys_Account WHERE UserName=@Name AND Pwd=@Pwd AND IsValid=1
+    </sqlWrap>
+
+    <sqlWrap sqlName="Logout" supportDBType="MySql,SqlServer">
+      update Log_UserLogin set LogoutDate=getdate() where Id=@LoginId
+    </sqlWrap>
+
+    <sqlWrap sqlName="HasPageRight" supportDBType="MySql,SqlServer">
+      SELECT *
+      FROM Sys_FunctionPage
+      WHERE PageId IN
+      (SELECT id
+      FROM Sys_Page WHERE 1=1
+      #if(@AreaName){ AND AreaName=@AreaName}
+      #if(@ControllerName){ AND ControllerName=@ControllerName}
+      #if(@ActionName){ AND ActionName=@ActionName}
+      )
+      AND FunctionId IN
+      (SELECT FunctionId
+      FROM Sys_RoleFunction
+      WHERE RoleId IN
+      (SELECT RoleId
+      FROM Sys_AccountRole
+      WHERE AccountId=@LoginId
+      AND IsValid=1)
+      AND IsValid=1 )
+      AND IsValid=1
+    </sqlWrap>
+    
+  </module>
+</root>

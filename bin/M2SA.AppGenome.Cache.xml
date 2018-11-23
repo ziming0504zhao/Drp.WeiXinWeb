@@ -1,0 +1,1335 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>M2SA.AppGenome.Cache</name>
+    </assembly>
+    <members>
+        <member name="T:M2SA.AppGenome.Cache.AbstractCache">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Cache.AbstractCache.Notify">
+            <summary>
+            缓存监听接口的实现
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Cache.AbstractCache.CompressionThreshold">
+            <summary>
+            大于指定的字节数，则启用压缩保存
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Cache.AbstractCache.LoadDataHandler">
+            <summary>
+            缓存项操作接口
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Cache.AbstractCache.Name">
+            <summary>
+            缓存名称
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Cache.AbstractCache.ExpiryTime">
+            <summary>
+            缓存有效期
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.AbstractCache.Get(System.String)">
+            <summary>
+            获取数据
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.AbstractCache.Get``1(System.Object)">
+            <summary>
+            获取数据
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.AbstractCache.Set(System.String,System.Object)">
+            <summary>
+            保存数据
+            </summary>
+            <param name="key"></param>
+            <param name="data"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.AbstractCache.Set(System.Object,System.Object)">
+            <summary>
+            保存数据
+            </summary>
+            <param name="key"></param>
+            <param name="data"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.AbstractCache.Remove(System.String)">
+            <summary>
+            移除数据
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.AbstractCache.Clear">
+            <summary>
+            清除缓存
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.AbstractCache.GetState">
+            <summary>
+            获取缓存状态信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.AbstractCache.GetItem(System.String)">
+            <summary>
+            获取数据
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.AbstractCache.SetItem(System.String,System.Object,System.TimeSpan)">
+            <summary>
+            保存数据
+            </summary>
+            <param name="key"></param>
+            <param name="data"></param>
+            <param name="expiryTime"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.AbstractCache.RemoveItem(System.String)">
+            <summary>
+            移除数据
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="T:M2SA.AppGenome.Cache.ActiveCacheNotify">
+            <summary>
+            保持缓存定时更新的ICacheNotify的实现
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Cache.ActiveCacheNotify.KeepActive">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Cache.ActiveCacheNotify.RefreshInterval">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.ActiveCacheNotify.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Cache.ActiveCacheNotify.NeedItemHandler">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.ActiveCacheNotify.SetCache(M2SA.AppGenome.Cache.ICache)">
+            <summary>
+            
+            </summary>
+            <param name="cache"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.ActiveCacheNotify.OnBeforeGet(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.ActiveCacheNotify.OnAfterGet(System.String,System.Object@)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.ActiveCacheNotify.OnBeforeSet(System.String,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.ActiveCacheNotify.OnAfterSet(System.String,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.ActiveCacheNotify.OnBeforeRemove(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.ActiveCacheNotify.OnAfterRemove(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="T:M2SA.AppGenome.Cache.ArgumentAssertion">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.ArgumentAssertion.IsNotNull(System.Object,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="argumentValue"></param>
+            <param name="argumentName"></param>
+        </member>
+        <member name="T:M2SA.AppGenome.Cache.CacheFactory">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Cache.CacheFactory.ModuleKey">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.CacheFactory.LoadConfigInfo(System.String)">
+            <summary>
+            加载指定的配置信息
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.CacheFactory.GetCache">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.CacheFactory.GetCache(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="categoryName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.CacheFactory.ExistsCache(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="categoryName"></param>
+            <returns></returns>
+        </member>
+        <member name="T:M2SA.AppGenome.Cache.AppDomainCache">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.AppDomainCache.GetItem(System.String)">
+            <summary>
+            获取数据
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.AppDomainCache.SetItem(System.String,System.Object,System.TimeSpan)">
+            <summary>
+            保存数据
+            </summary>
+            <param name="key"></param>
+            <param name="data"></param>
+            <param name="expiryTime"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.AppDomainCache.RemoveItem(System.String)">
+            <summary>
+            移除数据
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.AppDomainCache.Clear">
+            <summary>
+            清除缓存
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.AppDomainCache.GetState">
+            <summary>
+            获取缓存状态信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:M2SA.AppGenome.Cache.EmptyCache">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.EmptyCache.GetItem(System.String)">
+            <summary>
+            获取数据
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.EmptyCache.SetItem(System.String,System.Object,System.TimeSpan)">
+            <summary>
+            保存数据
+            </summary>
+            <param name="key"></param>
+            <param name="data"></param>
+            <param name="expiryTime"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.EmptyCache.RemoveItem(System.String)">
+            <summary>
+            移除数据
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.EmptyCache.Clear">
+            <summary>
+            清除缓存
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.EmptyCache.GetState">
+            <summary>
+            获取缓存状态信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:M2SA.AppGenome.Cache.MemCached.MemCache">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Cache.MemCached.MemCache.Servers">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemCache.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemCache.Initialize(M2SA.AppGenome.Configuration.IConfigNode)">
+            <summary>
+            
+            </summary>
+            <param name="config"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemCache.GetItem(System.String)">
+            <summary>
+            获取数据
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemCache.SetItem(System.String,System.Object,System.TimeSpan)">
+            <summary>
+            保存数据
+            </summary>
+            <param name="key"></param>
+            <param name="data"></param>
+            <param name="expiryTime"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemCache.RemoveItem(System.String)">
+            <summary>
+            移除数据
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemCache.Clear">
+            <summary>
+            清除缓存
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemCache.GetState">
+            <summary>
+            获取缓存状态信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemCache.Increment(System.String,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="amount"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemCache.Get(System.String[])">
+            <summary>
+            
+            </summary>
+            <param name="keys"></param>
+            <returns></returns>
+        </member>
+        <member name="T:M2SA.AppGenome.Cache.MemCached.FNV1_32">
+            <summary>
+            Fowler-Noll-Vo hash, variant 1, 32-bit version.
+            http://www.isthe.com/chongo/tech/comp/fnv/
+            </summary>
+        </member>
+        <member name="F:M2SA.AppGenome.Cache.MemCached.FNV1_32.hash">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.FNV1_32.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.FNV1_32.Initialize">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.FNV1_32.HashCore(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="array"></param>
+            <param name="ibStart"></param>
+            <param name="cbSize"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.FNV1_32.HashFinal">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:M2SA.AppGenome.Cache.MemCached.FNV1a_32">
+            <summary>
+            Fowler-Noll-Vo hash, variant 1a, 32-bit version.
+            http://www.isthe.com/chongo/tech/comp/fnv/
+            </summary>
+        </member>
+        <member name="F:M2SA.AppGenome.Cache.MemCached.FNV1a_32.hash">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.FNV1a_32.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.FNV1a_32.Initialize">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.FNV1a_32.HashCore(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="array"></param>
+            <param name="ibStart"></param>
+            <param name="cbSize"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.FNV1a_32.HashFinal">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:M2SA.AppGenome.Cache.MemCached.ModifiedFNV1_32">
+            <summary>
+            Modified Fowler-Noll-Vo hash, 32-bit version.
+            http://home.comcast.net/~bretm/hash/6.html
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.ModifiedFNV1_32.HashFinal">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:M2SA.AppGenome.Cache.MemCached.MemcachedProxy">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.MemcachedLogger">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Name">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.#ctor(System.String,M2SA.AppGenome.Cache.MemCached.ServerScope,System.Collections.Generic.IList{M2SA.AppGenome.Cache.MemCached.ServerNode})">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <param name="scope"></param>
+            <param name="servers"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Add(System.String,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Add(System.String,System.Object,System.DateTime)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="expiry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Add(System.String,System.Object,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="region"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Add(System.String,System.Object,System.TimeSpan)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="expiry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Add(System.String,System.Object,System.UInt32)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="hash"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Add(System.String,System.Object,System.UInt32,System.DateTime)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="hash"></param>
+            <param name="expiry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Add(System.String,System.Object,System.UInt32,System.TimeSpan)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="hash"></param>
+            <param name="expiry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Append(System.String,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Append(System.String,System.Object,System.UInt32)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="hash"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.CheckAndSet(System.String,System.Object,System.UInt64)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="unique"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.CheckAndSet(System.String,System.Object,System.DateTime,System.UInt64)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="expiry"></param>
+            <param name="unique"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.CheckAndSet(System.String,System.Object,System.TimeSpan,System.UInt64)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="expiry"></param>
+            <param name="unique"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.CheckAndSet(System.String,System.Object,System.UInt32,System.UInt64)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="hash"></param>
+            <param name="unique"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.CheckAndSet(System.String,System.Object,System.UInt32,System.DateTime,System.UInt64)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="hash"></param>
+            <param name="expiry"></param>
+            <param name="unique"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.CheckAndSet(System.String,System.Object,System.UInt32,System.TimeSpan,System.UInt64)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="hash"></param>
+            <param name="expiry"></param>
+            <param name="unique"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Decrement(System.String,System.UInt64)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Decrement(System.String,System.UInt64,System.UInt32)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="hash"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Delete(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Delete(System.String,System.DateTime)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="delay"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Delete(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="region"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Delete(System.String,System.TimeSpan)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="delay"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Delete(System.String,System.UInt32)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="hash"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Delete(System.String,System.UInt32,System.DateTime)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="hash"></param>
+            <param name="delay"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Delete(System.String,System.UInt32,System.TimeSpan)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="hash"></param>
+            <param name="delay"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.FlushAll">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.FlushAll(System.TimeSpan)">
+            <summary>
+            
+            </summary>
+            <param name="delay"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.FlushAll(System.TimeSpan,System.Boolean)">
+            <summary>
+            
+            </summary>
+            <param name="delay"></param>
+            <param name="staggered"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Get(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Get(System.String[])">
+            <summary>
+            
+            </summary>
+            <param name="keys"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Get(System.String[],System.UInt32[])">
+            <summary>
+            
+            </summary>
+            <param name="keys"></param>
+            <param name="hashes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Get(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="region"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Get(System.String,System.UInt32)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="hash"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.GetCounter(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.GetCounter(System.String[])">
+            <summary>
+            
+            </summary>
+            <param name="keys"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.GetCounter(System.String,System.UInt32)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="hash"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.GetCounter(System.String[],System.UInt32[])">
+            <summary>
+            
+            </summary>
+            <param name="keys"></param>
+            <param name="hashes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Gets(System.String,System.UInt64@)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="unique"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Gets(System.String[],System.UInt64[]@)">
+            <summary>
+            
+            </summary>
+            <param name="keys"></param>
+            <param name="uniques"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Gets(System.String,System.UInt32,System.UInt64@)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="hash"></param>
+            <param name="unique"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Gets(System.String[],System.UInt32[],System.UInt64[]@)">
+            <summary>
+            
+            </summary>
+            <param name="keys"></param>
+            <param name="hashes"></param>
+            <param name="uniques"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Increment(System.String,System.UInt64)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Increment(System.String,System.UInt64,System.UInt32)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="hash"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Prepend(System.String,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Prepend(System.String,System.Object,System.UInt32)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="hash"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Replace(System.String,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Replace(System.String,System.Object,System.DateTime)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="expiry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Replace(System.String,System.Object,System.TimeSpan)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="expiry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Replace(System.String,System.Object,System.UInt32)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="hash"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Replace(System.String,System.Object,System.UInt32,System.DateTime)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="hash"></param>
+            <param name="expiry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Replace(System.String,System.Object,System.UInt32,System.TimeSpan)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="hash"></param>
+            <param name="expiry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Set(System.String,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Set(System.String,System.Object,System.DateTime)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="expiry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Set(System.String,System.Object,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="region"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Set(System.String,System.Object,System.TimeSpan)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="expiry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Set(System.String,System.Object,System.UInt32)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="hash"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Set(System.String,System.Object,System.String,System.DateTime)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="region"></param>
+            <param name="expiry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Set(System.String,System.Object,System.String,System.TimeSpan)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="region"></param>
+            <param name="expiry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Set(System.String,System.Object,System.UInt32,System.DateTime)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="hash"></param>
+            <param name="expiry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Set(System.String,System.Object,System.UInt32,System.TimeSpan)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="hash"></param>
+            <param name="expiry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.SetCounter(System.String,System.UInt64)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.SetCounter(System.String,System.UInt64,System.DateTime)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="expiry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.SetCounter(System.String,System.UInt64,System.TimeSpan)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="expiry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.SetCounter(System.String,System.UInt64,System.UInt32)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="hash"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.SetCounter(System.String,System.UInt64,System.UInt32,System.DateTime)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="hash"></param>
+            <param name="expiry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.SetCounter(System.String,System.UInt64,System.UInt32,System.TimeSpan)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <param name="hash"></param>
+            <param name="expiry"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Stats">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Stats(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Stats(System.UInt32)">
+            <summary>
+            
+            </summary>
+            <param name="hash"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.StatsByHost(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="host"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.Status">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.CompressionThreshold">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.KeyPrefix">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.MaxPoolSize">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.MinPoolSize">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.SendReceiveTimeout">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.SocketRecycleAge">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.CasResult">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.CasResult.Stored">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.CasResult.NotStored">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.CasResult.Exists">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:M2SA.AppGenome.Cache.MemCached.MemcachedProxy.CasResult.NotFound">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:M2SA.AppGenome.Cache.MemCached.MemcachedProxyException">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxyException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            
+            </summary>
+            <param name="info"></param>
+            <param name="context"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxyException.#ctor(System.String,System.Exception)">
+            <summary>
+            
+            </summary>
+            <param name="message"></param>
+            <param name="innerException"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxyException.#ctor(System.Exception)">
+            <summary>
+            
+            </summary>
+            <param name="innerException"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxyException.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.MemcachedProxyException.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:M2SA.AppGenome.Cache.MemCached.PooledSocket">
+            <summary>
+            The PooledSocket class encapsulates a socket connection to a specified memcached server.
+            It contains a buffered stream for communication, and methods for sending and retrieving
+            data from the memcached server, as well as general memcached error checking.
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.PooledSocket.Dispose">
+            <summary>
+            Disposing of a PooledSocket object in any way causes it to be returned to its SocketPool.
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.PooledSocket.Close">
+            <summary>
+            This method closes the underlying stream and socket.
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Cache.MemCached.PooledSocket.IsAlive">
+            <summary>
+            Checks if the underlying socket and stream is connected and available.
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.PooledSocket.Write(System.String)">
+            <summary>
+            Writes a string to the socket encoded in UTF8 format.
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.PooledSocket.Write(System.Byte[])">
+            <summary>
+            Writes an array of bytes to the socket and flushes the stream.
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.PooledSocket.ReadLine">
+            <summary>
+            Reads from the socket until the sequence '\r\n' is encountered, 
+            and returns everything up to but not including that sequence as a UTF8-encoded string
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.PooledSocket.ReadResponse">
+            <summary>
+            Reads a response line from the socket, checks for general memcached errors, and returns the line.
+            If an error is encountered, this method will throw an exception.
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.PooledSocket.Read(System.Byte[])">
+            <summary>
+            Fills the given byte array with data from the socket.
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.PooledSocket.SkipUntilEndOfLine">
+            <summary>
+            Reads from the socket until the sequence '\r\n' is encountered.
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.PooledSocket.Reset">
+            <summary>
+            Resets this PooledSocket by making sure the incoming buffer of the socket is empty.
+            If there was any leftover data, this method return true.
+            </summary>
+        </member>
+        <member name="T:M2SA.AppGenome.Cache.MemCached.ServerNode">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Cache.MemCached.ServerNode.Address">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Cache.MemCached.ServerNode.Scope">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Cache.MemCached.ServerNode.Slaves">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.ServerNode.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:M2SA.AppGenome.Cache.MemCached.ServerPool">
+            <summary>
+            The ServerPool encapsulates a collection of memcached servers and the associated SocketPool objects.
+            This class contains the server-selection logic, and contains methods for executing a block of code on 
+            a socket from the server corresponding to a given key.
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.ServerPool.#ctor(System.Collections.Generic.IList{M2SA.AppGenome.Cache.MemCached.ServerNode},M2SA.AppGenome.Cache.MemCached.ServerScope)">
+            <summary>
+            Internal constructor. This method takes the array of hosts and sets up an internal list of socketpools.
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.ServerPool.GetSocketPool(System.UInt32)">
+            <summary>
+            Given an item key hash, this method returns the socketpool which is closest on the server key continuum.
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.ServerPool.Execute``1(System.UInt32,``0,M2SA.AppGenome.Cache.MemCached.UseSocket{``0})">
+            <summary>
+            This method executes the given delegate on a socket from the server that corresponds to the given hash.
+            If anything causes an error, the given defaultValue will be returned instead.
+            This method takes care of disposing the socket properly once the delegate has executed.
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.ServerPool.ExecuteAll(M2SA.AppGenome.Cache.MemCached.UseSocket)">
+            <summary>
+            This method executes the given delegate on all servers.
+            </summary>
+        </member>
+        <member name="T:M2SA.AppGenome.Cache.MemCached.ServerScope">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:M2SA.AppGenome.Cache.MemCached.ServerScope.None">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:M2SA.AppGenome.Cache.MemCached.ServerScope.Read">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:M2SA.AppGenome.Cache.MemCached.ServerScope.Write">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:M2SA.AppGenome.Cache.MemCached.SocketPool">
+            <summary>
+            The SocketPool encapsulates the list of PooledSockets against one specific host, and contains methods for 
+            acquiring or returning PooledSockets.
+            </summary>
+        </member>
+        <member name="F:M2SA.AppGenome.Cache.MemCached.SocketPool.deadEndPointSecondsUntilRetry">
+            <summary>
+            If the host stops responding, we mark it as dead for this amount of seconds, 
+            and we double this for each consecutive failed retry. If the host comes alive
+            again, we reset this to 1 again.
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.SocketPool.getEndPoint(System.String)">
+            <summary>
+            This method parses the given string into an IPEndPoint.
+            If the string is malformed in some way, or if the host cannot be resolved, this method will throw an exception.
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.SocketPool.Acquire">
+            <summary>
+            Gets a socket from the pool.
+            If there are no free sockets, a new one will be created. If something goes
+            wrong while creating the new socket, this pool's endpoint will be marked as dead
+            and all subsequent calls to this method will return null until the retry interval
+            has passed.
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Cache.MemCached.SocketPool.Return(M2SA.AppGenome.Cache.MemCached.PooledSocket)">
+            <summary>
+            Returns a socket to the pool.
+            If the socket is dead, it will be destroyed.
+            If there are more than MaxPoolSize sockets in the pool, it will be destroyed.
+            If there are less than MinPoolSize sockets in the pool, it will always be put back.
+            If there are something inbetween those values, the age of the socket is checked. 
+            If it is older than the SocketRecycleAge, it is destroyed, otherwise it will be 
+            put back in the pool.
+            </summary>
+        </member>
+    </members>
+</doc>

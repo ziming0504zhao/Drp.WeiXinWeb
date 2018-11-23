@@ -1,0 +1,51 @@
+﻿@using Drp.Model.Customer
+@using Drp.Model.WeiXin
+
+@{
+    ViewBag.Title = "我的粉丝";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var weiXinUsers = ViewData["WeiXinUsers"] as IList<WeixinUser>;
+    //var customerId = ViewData["CustomerId"] as string;
+    var customerBases = ViewData["CustomerBases"] as IList<CustomerBase>;
+}
+
+
+<div class="box">
+    <div class="">
+        <div class="personalCenterMiddle fansHead clearfix">
+            <div class="borderRight">粉丝总数<span>@(ViewData["FanCount"])位</span></div>
+            <div>排名<span>@(ViewData["Ranking"])</span></div>
+        </div>
+        <div class="fansDetail clearfix">
+            <ul>
+                @{
+                    if (null != customerBases && customerBases.Any())
+                    {
+                        foreach (var customer in customerBases.Where(p => p.ParentId == int.Parse(ViewData["CustomerId"].ToString())))
+                        {
+                            var wxus = weiXinUsers.Where(p => p.CustomerId == customer.Id).ToList();
+                            if (null != wxus && wxus.Any())
+                            {
+                                var wxu= wxus.First();
+
+                                <li><img src="@wxu.HeaderImage"><span>@(wxu.NickName)</span></li>
+                            }
+                        }
+                    }
+                }
+                @*<li><img src="/images/funsIcon1.png"><span>文本标签</span></li>
+                <li><img src="/images/funsIcon2.png"><span>文本标签</span></li>
+                <li><img src="/images/funsIcon1.png"><span>文本标签</span></li>
+                <li><img src="/images/funsIcon2.png"><span>文本标签</span></li>
+                <li><img src="/images/funsIcon1.png"><span>文本标签</span></li>
+                <li><img src="/images/funsIcon2.png"><span>文本标签</span></li>
+                <li><img src="/images/funsIcon1.png"><span>文本标签</span></li>
+                <li><img src="/images/funsIcon2.png"><span>文本标签</span></li>
+                <li><img src="/images/funsIcon1.png"><span>文本标签</span></li>
+                <li><img src="/images/funsIcon2.png"><span>文本标签</span></li>
+                <li><img src="/images/funsIcon1.png"><span>文本标签</span></li>
+                <li><img src="/images/funsIcon2.png"><span>文本标签</span></li>*@
+            </ul>
+        </div>
+    </div>
+</div>

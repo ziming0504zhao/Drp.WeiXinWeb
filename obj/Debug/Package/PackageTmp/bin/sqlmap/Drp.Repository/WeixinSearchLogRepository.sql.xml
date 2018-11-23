@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root xmlns="http://m2sa.net/Schema/SqlMapping">
+  <module moduleName="WeixinSearchLogRepository" dbName="Drp">
+    <sqlWrap  sqlName="Insert"  supportDBType="MySql,SqlServer">
+      INSERT INTO Weixin_SearchLog
+      ([OpenId]
+      ,[SearchContent]
+      ,[IsSpeak]
+      ,[SplitResult]
+      ,[SearchResult]
+      ,[IsValid]
+      ,[CreateUserName]
+      ,[CreateDate]
+      ,[CreateLoginId])
+      VALUES
+      (@OpenId
+      ,@SearchContent
+      ,@IsSpeak
+      ,@SplitResult
+      ,@SearchResult
+      ,1
+      ,@UserName
+      ,GETDATE()
+      ,@LoginId)
+      SELECT @@IDENTITY
+    </sqlWrap>
+
+    <sqlWrap  sqlName="Update"  supportDBType="MySql,SqlServer">
+      UPDATE Weixin_SearchLog
+      SET [OpenId] = @OpenId
+      ,[SearchContent] = @SearchContent
+      ,[IsSpeak] = @IsSpeak
+      ,[SplitResult] = @SplitResult
+      ,[SearchResult] = @SearchResult
+      ,[IsValid] = @IsValid
+      ,[UpdateDate] = GETDATE()
+      ,[UpdateLoginId] = @LoginId
+      WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SelectById" supportDBType="MySql,SqlServer">
+      SELECT * FROM  Weixin_SearchLog WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap  sqlName="FindByOpenId"  supportDBType="MySql,SqlServer">
+      SELECT * FROM Weixin_SearchLog WHERE OpenId=@OpenId AND IsValid=1
+    </sqlWrap>
+
+    <sqlWrap  sqlName="FindByList"  supportDBType="MySql,SqlServer">
+      SELECT * FROM Weixin_SearchLog WHERE 1=1
+      #if(@IsValid){ AND IsValid=@IsValid}
+      ORDER BY Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SetValid" supportDBType="MySql,SqlServer">
+      update Weixin_SearchLog set IsValid=@IsValid,UpdateDate=getdate(),UpdateLoginId=@LoginId
+      where Id in (@IdList) and IsValid&lt;&gt;@IsValid;
+    </sqlWrap>
+    
+  </module>
+</root>

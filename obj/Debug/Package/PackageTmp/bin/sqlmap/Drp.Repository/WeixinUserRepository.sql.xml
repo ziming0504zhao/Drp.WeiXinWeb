@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root xmlns="http://m2sa.net/Schema/SqlMapping">
+  <module moduleName="WeixinUserRepository" dbName="Drp">
+    <sqlWrap  sqlName="Insert"  supportDBType="MySql,SqlServer">
+      INSERT INTO Weixin_User
+      ([OpenId]
+      ,[UnionId]
+      ,[NickName]
+      ,[Gender]
+      ,[Country]
+      ,[Province]
+      ,[City]
+      ,[HeaderImage]
+      ,[Privilege]
+      ,[CustomerId]
+      ,[IsValid]
+      ,[CreateUserName]
+      ,[CreateDate]
+      ,[CreateLoginId])
+      VALUES
+      (@OpenId
+      ,@UnionId
+      ,@NickName
+      ,@Gender
+      ,@Country
+      ,@Province
+      ,@City
+      ,@HeaderImage
+      ,@Privilege
+      ,@CustomerId
+      ,1
+      ,@UserName
+      ,GETDATE()
+      ,@LoginId)
+      select @@identity
+    </sqlWrap>
+    
+    <sqlWrap  sqlName="Update"  supportDBType="MySql,SqlServer">
+      UPDATE Weixin_User
+      SET [OpenId] = @OpenId
+      ,[UnionId] = @UnionId
+      ,[NickName] = @NickName
+      ,[Gender] = @Gender
+      ,[Country] = @Country
+      ,[Province] = @Province
+      ,[City] = @City
+      ,[HeaderImage] = @HeaderImage
+      ,[Privilege] = @Privilege
+      ,[CustomerId] = @CustomerId
+      ,[UpdateDate] = GETDATE()
+      ,[UpdateLoginId] = @LoginId
+      WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SelectById" supportDBType="MySql,SqlServer">
+      SELECT * FROM  [dbo].[Weixin_User] WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap  sqlName="FindByUserId"  supportDBType="MySql,SqlServer">
+      SELECT * FROM Weixin_User WHERE UserId=@UserId
+    </sqlWrap>
+
+    <sqlWrap  sqlName="FindByList"  supportDBType="MySql,SqlServer">
+      SELECT * FROM Weixin_User  WHERE 1=1
+      #if(@NickName){ AND NickName like '%'+@NickName+'%'}
+      #if(@OpenId){ AND OpenId=@OpenId}
+      #if(@CustomerId){ AND CustomerId=@CustomerId}
+      #if(@IsValid){ AND IsValid=@IsValid}
+      ORDER BY Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SetValid" supportDBType="MySql,SqlServer">
+      update Weixin_User set IsValid=@IsValid,UpdateDate=getdate(),UpdateLoginId=@LoginId
+      where Id in (@IdList) and IsValid&lt;&gt;@IsValid;
+    </sqlWrap>
+
+  </module>
+</root>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root xmlns="http://m2sa.net/Schema/SqlMapping">
+  <module moduleName="OrderBaseInfoRepository" dbName="Drp">
+    <sqlWrap  sqlName="Insert"  supportDBType="MySql,SqlServer">
+      INSERT INTO Order_BaseInfo
+      ([OrderNo]
+      ,[LineId]
+      ,[LinePriceId]
+      ,[StartDate]
+      ,[CustomerId]
+      ,[AdultNum]
+      ,[Contact]
+      ,[CellPhone]
+      ,[Email]
+      ,[Remark]
+      ,[TotalAmount]
+      ,[TotalPersons]
+      ,[AveragePrice]
+      ,[IsPayCash]
+      ,[SellingPrice]
+      ,[Cost]
+      ,[SupplierId]
+      ,[SupplierName]
+      ,[ChannelCommission]
+      ,[SalesCommission]
+      ,[LineRouteUrl]
+      ,[BookStatusId]
+      ,[BookStatusName]
+      ,[OrderTypeId]
+      ,[OrderTypeName]
+      ,[CityName]
+      ,[IsValid]
+      ,[CreateUserName]
+      ,[CreateDate]
+      ,[CreateLoginId])
+      VALUES
+      (@OrderNo
+      ,@LineId
+      ,@LinePriceId
+      ,@StartDate
+      ,@CustomerId
+      ,@AdultNum
+      ,@Contact
+      ,@CellPhone
+      ,@Email
+      ,@Remark
+      ,@TotalAmount
+      ,@TotalPersons
+      ,@AveragePrice
+      ,@IsPayCash
+      ,@SellingPrice
+      ,@Cost
+      ,@SupplierId
+      ,@SupplierName
+      ,@ChannelCommission
+      ,@SalesCommission
+      ,@LineRouteUrl
+      ,@BookStatusId
+      ,@BookStatusName
+      ,@OrderTypeId
+      ,@OrderTypeName
+      ,@CityName
+      ,1
+      ,@UserName
+      ,GETDATE()
+      ,@LoginId)
+      SELECT @@IDENTITY
+    </sqlWrap>
+    
+    <sqlWrap  sqlName="Update"  supportDBType="MySql,SqlServer">
+      UPDATE Order_BaseInfo
+      SET [OrderNo] = @OrderNo
+      ,[LineId] = @LineId
+      ,[LinePriceId] = @LinePriceId
+      ,[StartDate] = @StartDate
+      ,[CustomerId] = @CustomerId
+      ,[AdultNum] = @AdultNum
+      ,[Contact] = @Contact
+      ,[CellPhone] = @CellPhone
+      ,[Email] = @Email
+      ,[Remark] = @Remark
+      ,[TotalAmount] = @TotalAmount
+      ,[TotalPersons] = @TotalPersons
+      ,[AveragePrice] = @AveragePrice
+      ,[IsPayCash] = @IsPayCash
+      ,[SellingPrice] = @SellingPrice
+      ,[Cost] = @Cost
+      ,[SupplierId] = @SupplierId
+      ,[SupplierName] = @SupplierName
+      ,[ChannelCommission] = @ChannelCommission
+      ,[SalesCommission] = @SalesCommission
+      ,[LineRouteUrl] = @LineRouteUrl
+      ,[BookStatusId] = @BookStatusId
+      ,[BookStatusName] = @BookStatusName
+      ,[OrderTypeId] = @OrderTypeId
+      ,[OrderTypeName] = @OrderTypeName
+      ,[CityName] = @CityName
+      ,[UpdateDate] = GETDATE()
+      ,[UpdateLoginId] = @LoginId
+      WHERE  Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SelectById" supportDBType="MySql,SqlServer">
+      SELECT * FROM  [Order_BaseInfo] WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="FindByList" supportDBType="MySql,SqlServer">
+      SELECT * FROM Order_BaseInfo WHERE 1=1
+      #if(@OrderNo){ AND OrderNo=@OrderNo}
+      #if(@LineId){ AND LineId=@LineId}
+      #if(@CellPhone){ AND CellPhone=@CellPhone}
+      #if(@LineName){ AND LineId IN (SELECT ID FROM Product_Line WHERE LineName LIKE '%'+@LineName+'%')}
+      #if(@CityName){ AND CityName LIKE '%'+@CityName+'%' }
+      #if(@LinePriceId){ AND LinePriceId=@LinePriceId}
+      #if(@IsPayCash){ AND IsPayCash=@IsPayCash}
+      #if(@BookStatusId){ AND BookStatusId=@BookStatusId}
+      #if(@OrderTypeIdList){ AND OrderTypeId IN(@OrderTypeIdList)}
+      #if(@CustomerId){ AND CustomerId=@CustomerId}
+      #if(@IsValid){ AND IsValid=@IsValid}
+      ORDER BY Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SetValid" supportDBType="MySql,SqlServer">
+      update Order_BaseInfo set IsValid=@IsValid,UpdateDate=getdate(),UpdateLoginId=@LoginId
+      where Id in (@IdList) and IsValid&lt;&gt;@IsValid;
+    </sqlWrap>
+
+  </module>
+</root>

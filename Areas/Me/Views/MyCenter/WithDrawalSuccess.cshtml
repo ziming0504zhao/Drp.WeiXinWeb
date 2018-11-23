@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "个人中心";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="box">
+    <div class="successBox">
+        <img src="/images/success.png" alt="">
+        <p>恭喜您，提交成功请等待审核。</p>
+        <div class="submit active" onclick="ToMyCenter();">返回个人中心</div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+	function ToMyCenter() {
+	    window.location.href = "/Me/MyCenter/Index";
+	}
+
+</script>

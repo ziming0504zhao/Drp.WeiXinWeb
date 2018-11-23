@@ -1,0 +1,278 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>M2SA.AppGenome.Queues</name>
+    </assembly>
+    <members>
+        <member name="T:M2SA.AppGenome.Queues.IQueueLoadStrategy">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Queues.IQueueLoadStrategy.Initialize(System.String,System.Collections.Generic.IList{M2SA.AppGenome.Queues.IMessageQueue})">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <param name="queues"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Queues.IQueueLoadStrategy.GetSendQueue">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Queues.IQueueLoadStrategy.GetReceiveQueue">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:M2SA.AppGenome.Queues.MSMQ">
+            <summary>
+            MSMQ消息队列的实现封装
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Queues.MSMQ.GetQueueLength(System.String,System.String)">
+            <summary>
+            获取指定的MSMQ的队列长度
+            </summary>
+            <param name="queuePath"></param>
+            <param name="machineName"></param>
+            <returns></returns>
+        </member>
+        <member name="E:M2SA.AppGenome.Queues.MSMQ.ReceiveCompleted">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Queues.MSMQ.Timeout">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Queues.MSMQ.Priority">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Queues.MSMQ.Formatter">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Queues.MSMQ.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Queues.MSMQ.Initialize(M2SA.AppGenome.Configuration.IConfigNode)">
+            <summary>
+            
+            </summary>
+            <param name="config"></param>
+        </member>
+        <member name="P:M2SA.AppGenome.Queues.MSMQ.Name">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Queues.MSMQ.Path">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Queues.MSMQ.Count">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Queues.MSMQ.IngoingCount">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Queues.MSMQ.CanWrite">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Queues.MSMQ.Send(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Queues.MSMQ.BeginReceive">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Queues.MSMQ.Receive">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Queues.MSMQ.Dispose">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:M2SA.AppGenome.Queues.QueueCluster">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Queues.QueueCluster.Timeout">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Queues.QueueCluster.Priority">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Queues.QueueCluster.LoadStrategy">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Queues.QueueCluster.WorkQueues">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Queues.QueueCluster.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Queues.QueueCluster.Initialize(M2SA.AppGenome.Configuration.IConfigNode)">
+            <summary>
+            
+            </summary>
+            <param name="config"></param>
+        </member>
+        <member name="E:M2SA.AppGenome.Queues.QueueCluster.ReceiveCompleted">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Queues.QueueCluster.Name">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Queues.QueueCluster.Path">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Queues.QueueCluster.Count">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Queues.QueueCluster.IngoingCount">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Queues.QueueCluster.CanWrite">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Queues.QueueCluster.Send(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Queues.QueueCluster.BeginReceive">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Queues.QueueCluster.Receive">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Queues.QueueCluster.Dispose">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:M2SA.AppGenome.Queues.QueueFactory">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:M2SA.AppGenome.Queues.QueueFactory.QueueLogger">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:M2SA.AppGenome.Queues.QueueFactory.ModuleKey">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Queues.QueueFactory.LoadConfigInfo(System.String)">
+            <summary>
+            加载指定的配置信息
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Queues.QueueFactory.GetQueue(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="queueName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Queues.QueueFactory.GetQueueByDataType(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="dataType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Queues.QueueFactory.ExistsQueue(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="queueName"></param>
+            <returns></returns>
+        </member>
+        <member name="T:M2SA.AppGenome.Queues.LoadStrategies.RandomLoadStrategy">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:M2SA.AppGenome.Queues.LoadStrategies.RandomLoadStrategy.Initialize(System.String,System.Collections.Generic.IList{M2SA.AppGenome.Queues.IMessageQueue})">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <param name="queues"></param>
+        </member>
+        <member name="M:M2SA.AppGenome.Queues.LoadStrategies.RandomLoadStrategy.GetSendQueue">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:M2SA.AppGenome.Queues.LoadStrategies.RandomLoadStrategy.GetReceiveQueue">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

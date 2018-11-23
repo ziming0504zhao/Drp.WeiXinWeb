@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root xmlns="http://m2sa.net/Schema/SqlMapping">
+  <module moduleName="CardEquityRepository" dbName="Drp">
+    <sqlWrap  sqlName="Insert"  supportDBType="MySql,SqlServer">
+      INSERT INTO Card_Equity
+      ([CardId]
+      ,[ProductCategoryId]
+      ,[ProductCategoryName]
+      ,[EquityCount]
+      ,[EquityUsedCount]
+      ,[IsValid]
+      ,[CreateUserName]
+      ,[CreateDate]
+      ,[CreateLoginId])
+      VALUES
+      (@CardId
+      ,@ProductCategoryId
+      ,@ProductCategoryName
+      ,@EquityCount
+      ,@EquityUsedCount
+      ,1
+      ,@UserName
+      ,GETDATE()
+      ,@LoginId)
+      SELECT @@IDENTITY
+    </sqlWrap>
+    
+    <sqlWrap  sqlName="Update"  supportDBType="MySql,SqlServer">
+      UPDATE Card_Equity
+      SET [CardId] = @CardId
+      ,[ProductCategoryId] = @ProductCategoryId
+      ,[ProductCategoryName] = @ProductCategoryName
+      ,[EquityCount] = @EquityCount
+      ,[EquityUsedCount] = @EquityUsedCount
+      ,[UpdateDate] = GETDATE()
+      ,[UpdateLoginId] = @LoginId
+      WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SelectById" supportDBType="MySql,SqlServer">
+      SELECT * FROM  [Card_Equity] WHERE Id=@Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="FindByList" supportDBType="MySql,SqlServer">
+      SELECT * FROM Card_Equity WHERE 1=1
+      #if(@CardId){ AND CardId=@CardId}
+      #if(@ProductCategoryId){ AND ProductCategoryId=@ProductCategoryId}
+      #if(@IsValid){ AND IsValid=@IsValid}
+      ORDER BY Id
+    </sqlWrap>
+
+    <sqlWrap sqlName="SetValid" supportDBType="MySql,SqlServer">
+      update Card_Equity set IsValid=@IsValid,UpdateDate=getdate(),UpdateLoginId=@LoginId
+      where Id in (@IdList) and IsValid&lt;&gt;@IsValid;
+    </sqlWrap>
+
+  </module>
+</root>
